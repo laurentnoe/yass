@@ -1,0 +1,21 @@
+CC       = x86_64-w64-mingw32-gcc
+STRIP    = x86_64-w64-mingw32-strip
+CFLAGS   = -m64 -Wall -ansi -pedantic -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.15\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+CFLAGS  += -DWIN64
+CFLAGS  += -mtune=nocona -msse2 -ftree-vectorize
+LDFLAGS  = -static
+SOURCES  = align.c assemble.c avl.c display.c global_var.c \
+           kword.c list.c main.c prdyn.c proba.c red_black.c      \
+           regroup.c threads.c tuple.c util.c
+OBJECTS  = align.o assemble.o avl.o display.o global_var.o \
+           kword.o list.o main.o prdyn.o proba.o red_black.o      \
+           regroup.o threads.o tuple.o util.o
+
+all : clean  yass-Win64.exe
+
+yass-Win64.exe : $(OBJECTS)
+	 $(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
+	 $(STRIP) yass-Win64.exe 
+
+clean :
+	 rm -f *.o yass-Win64.exe

@@ -1,0 +1,22 @@
+CC       = i686-w64-mingw32-gcc
+STRIP    = i686-w64-mingw32-strip
+CFLAGS   = -m32 -Wall -ansi -pedantic -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.15\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+CFLAGS  += -DWIN32
+CFLAGS  += -DTHREAD_FORWARD_REVERSE
+CFLAGS  += -march=i686 -mtune=nocona -mmmx -ftree-vectorize
+LDFLAGS  = -static
+SOURCES  = align.c assemble.c avl.c display.c global_var.c \
+           kword.c list.c main.c prdyn.c proba.c red_black.c      \
+           regroup.c threads.c tuple.c util.c
+OBJECTS  = align.o assemble.o avl.o display.o global_var.o \
+           kword.o list.o main.o prdyn.o proba.o red_black.o      \
+           regroup.o threads.o tuple.o util.o
+
+all : clean  yass-Win32-i686-2threads.exe
+
+yass-Win32-i686-2threads.exe : $(OBJECTS)
+	 $(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
+	 $(STRIP) yass-Win32-i686-2threads.exe 
+
+clean :
+	 rm -f *.o yass-Win32-i686-2threads.exe
