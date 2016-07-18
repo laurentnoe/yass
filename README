@@ -1,0 +1,258 @@
+* YASS
+* Similarity search in DNA sequences
+* version 1.15
+
+** LICENSE
+
+YASS is distributed under the dual-licence of the CeCILL (version 2 or any later
+version), and the GPL (version 2 or any later version), so you can use, modify 
+and redistribute the program under these licences with almost no restriction.
+
+** COMMAND SYNTAX
+  yass [options] { file.fas | file1.mfas file2.mfas }
+      -h       display this Help screen
+      -d <int>    0 : Display alignment positions (default)
+                  1 : Display alignment positions + alignments + statistics
+                  2 : Display blast-like tabular output
+                  3 : Display light tabular output (better for post-processing)
+                  4 : Display bed file output      (better for post-processing)
+      -r <int>    0 : process forward (query) strain
+                  1 : process Reverse complement strain
+                  2 : process both forward/Reverse complement strains (default)
+      -o <str> Output file
+      -l       mask Lowercase regions (seeding algorithm only)
+      -s <int> Sort according to
+                  0 : alignment scores (default)
+                  1 : entropy
+                  2 : mutual information (experimental)
+                  3 : both entropy and score
+                  4 : positions on the first file
+                  5 : positions on the second file
+                  10-15 : same but sort by first  fasta chunks before
+                  20-25 : same but sort by second fasta chunks before
+                  30-35 : same but sort by both first/second chunks before
+      -v       display the current Version
+                                                                               
+      -M <int> select a scoring Matrix (default 3):
+               [Match,Transversion,Transition],(Gopen,Gext)
+                0 : [  1, -3, -2],( -8, -2)   1 : [  2, -3, -2],(-12, -4)
+                2 : [  3, -3, -2],(-16, -4)   3 : [  5, -4, -3],(-16, -4)
+                4 : [  5, -4, -2],(-16, -4)
+      -C <int>[,<int>[,<int>[,<int>]]]
+               reset match/mismatch/transistion/other Costs (penalties)
+               you can also give the 16 values of matrix (ACGT order)
+      -G <int>,<int> reset Gap opening/extension penalties
+      -L <real>,<real> reset Lambda and K parameters of Gumbel law
+      -X <int> Xdrop threshold score (default 25)
+      -E <int> E-value threshold (default 10)
+      -e <real> low complexity filter :
+                minimal allowed Entropy of trinucleotide distribution
+                ranging between 0 (no filter) and 6 (default 2.80)
+                                                                               
+      -O <int> limit number of Output alignments (default 100000)
+      -S <int> Select sequence from the first multi-fasta file (default 1)
+                 * use 0 to select the full first multi-fasta file
+      -T <int> forbid aligning too close regions (e.g. Tandem repeats)
+               valid for single sequence comparison only (default 16 bp)
+                                                                               
+      -p <str> seed Pattern(s)
+                 * use '#' for match
+                 * use '@' for match or transition
+                 * use '_' or '-' for joker
+                 * use ',' for seed separator (max: 32 seeds)
+                 - example with one seed :
+                    yass file.fas -p  "#@#__##__#_##@#"
+                 - example with two complementary seeds :
+                    yass file.fas -p "##_#_#@#_##@_##,##@#__@__##_#__###"
+                 (default  "###-#@-##@##,###--#-#--#-###")
+      -c <int> seed hit Criterion : 1 or 2 seeds to consider a hit (default 2)
+                                                                               
+      -t <real> Trim out over-represented seeds codes
+                ranging between 0.0 (no trim) and +inf (default 0.001)
+      -a <int> statistical tolerance Alpha (%) (default 5%)
+      -i <int> Indel rate (%)                  (default 8%)
+      -m <int> Mutation rate (%)               (default 25%)
+                                                                               
+      -W <int>,<int> Window <min,max> range for post-processing and grouping
+                     alignments (default <64,65536>)
+      -w <real> Window size coefficient for post-processing and grouping
+                alignments (default 16)
+                NOTE : -w 0 disables post-processing
+
+
+Scoring System :
+
+
+  -M <int> : choose a preselected matrix and gap opening and extension penalty
+  -----------------------------------------------------------------------------
+ 
+ the default "-M 3" gives fowoling scores :
+
+          +5 for match reward, 
+          -4 for transversion penalty,
+          -2 for transition penalty,
+          and
+
+          -16 for gap opening penalty.
+          -4  for gap extention penalty.
+
+  but you can also choose the 
+
+  -C <int>(,<int>(,<int>(,<int>))) : choose a scoring system
+  -----------------------------------------------------------------------------
+  
+  if you give 2 parameters : match reward, mismatch penalty
+              3 parameters : match reward, transversion penalty, 
+                             transition penalty
+	      4 parameters : match reward, transversion penalty, 
+                             transition penalty, 
+                             other penalty (non ACGTU letters)
+	      
+  -G <int>,<int> : choose a gap opening and extension penalty
+  ------------------------------------------------------------------------------
+  
+  for gap opening penalty, gap extention penalty.
+  
+
+
+  -d <int> : choose Display preferences
+  -------------------------------------
+  
+      -d 0  gives maximal positions of alignments
+      -d 1  gives ... + statistical parameters and quick alignments 
+            (it means that those alignments are computed using seeds
+             as anchors, which is not always the best solution, but
+             the fastest one)
+      -d 2 blast like tabular output
+      -d 3 "position - size" tiny display
+
+  -s <int> : choose Sorting 
+  -------------------------
+    it is possible to sort according to score (-s 1), positions on
+    the first (-s 4) or the second file (-s 5), and also, for
+    multifasta files to sort according to the first file chunks (-s 10
+    "to" 15), the secongd file chunks (-s 20 "to" 25) or both of them
+    (-s 30 "to" 35)
+
+  -S <int> : choose the first multifasta chunk
+  --------------------------------------------
+    this parameter is by default 1, since it selects the first chunk
+    of the first multifasta file : you can choose any valid chunk or
+    either fix it to "0" if you want to treat al ofl them
+
+  -p <pattern> : modify the seed Pattern
+  --------------------------------------
+
+      This element represents the seed pattern to be searched
+
+      * examples of seed patterns:
+                - PatternHunter  : ###__##_#__###  
+                - Mandala        : ###__#_##_###   (forcing small span) 
+                                   ####_##_###  
+                - YASS           : #@##_#__##__#@# (on Bernoulli
+		model with constrains on seed jokers/tr-free elements)
+                                   ##@_#@#__#_###  (on pure Bernoulli model) 
+				   				   				   
+                -  2 seeds       : 
+		   some examples to detect :
+                        - very small random regions : 
+                          ###-###-####,###-#--#--#-####
+			-      small random regions :
+                          ##-#----###-####,###--#-#-#--#--###
+			-            random regions :
+                          ##-#-##---##-##--#,##-###--#---#----###
+			-      large random regions :
+                          ##--#---#-#--###---##,##-#--#-#--#--##-##
+			- very small transition rich random regions :
+                          ###@##-##-#@#,###-@-#--@--#####
+			-      small transition rich random regions :
+                          ##@#-#-##@-###,#-##--#--#@#--@-###
+			-            transition rich random regions :
+                          ###-#----#-#--#@#-@#,##-#--@#-#-###--@#
+			-      large transition rich random regions :
+                          #@#--#----###--@-##,#-#-#@---#-#-@-##-##
+		   other examples :
+                        mixed regions (chr-inver-fungi) : 
+                          #@-##-##-#--@-###,#-##@---##---#---#@#-#
+			mixed regions (chr-best)        :
+                          #-###@#--#-#-@##,###@-#-#------@#-#--##
+			mixed regions (chr-avg)         :
+                          ##-#-#@#-#--@###,#-##@--#----#--##@##
+
+  -e : alignment Entropy
+  -----------------------
+
+      YASS does a filtering step based on the triplet composition
+      of the alignment
+
+          -e 0.0  : filter is off.
+	  -e 3.10 : filter is set to its default level
+          -e 5.99 : filter is set to its highest level (don't use this)
+
+      PS : this option is subject to changes in future versions
+
+  -r <int> : reverse strain considered 
+  ------------------------------------
+   
+      YASS considers both forward and complementary reverse strain 
+      of the first sequence if -r 2 set. You can select with -r 0 only
+      direct repeats or only complementary inverted ones with -r 1
+
+      (default is both forward and complementary : -r 2 )
+
+  -S <int> Select query sequence from a multifasta file (default 1)
+  ----------------------------------------------------------------
+     If the first file provided is not fasta but multifasta, you can choose
+     (using this parameter) which fasta sequence will be the query (by
+     default the first one).
+
+
+  -T <int> "anti Tandem trick"
+  ------------------------------
+     Forbid aligning too close regions (e.g. Tandem repeats)
+     valid only for comparing a single-sequence file against itself
+
+
+  -a -i -m : seed grouping parameters
+  -----------------------------------
+
+     YASS groups seeds before extension and then extends them once grouped. 
+     These parameters enable you to modify the grouping criteria and extention
+     limits that are fixed (before post processing). 
+
+     "-m" gives the expected mutation rate (25%) : it can be increased to 30% 
+     or 40% but no more in practice.
+
+     "-i" gives the expected indel rate (8%) : can be also modified to ~ 10%  
+
+     "-a" give the bound so 95% of (when fixed to 5%) of the distribution of 
+     indels/mutations between seeds are captured during the extention process.
+
+
+  -W <min,max> -w <mul> : Post-processing parameters
+  --------------------------------------------------
+     
+     In order to group some consecutive alignments into a better
+     scoring one, post processing tries to group neighbor alignments in
+     an iterative process : by applying several time a sliding windows
+     on the text and estimating score of possible groups formed.
+     Windows size can be controlled according to a geometric pattern
+     <mul> and two bounds <min,max>.
+     
+     -w 0 (or 1) disables this post-processing step.
+
+
+References
+==========
+
+YASS is presented in the following paper. If you use YASS, please cite
+one (or more) of the following papers in your work :
+
+[1]    L. Noe, G. Kucherov,  
+       YASS: enhancing the sensitivity of DNA similarity search, 
+       2005, Nucleic Acids Research, 33(2):W540-W543.
+
+[2]    L. Noe, G. Kucherov,
+       Improved hit criteria for DNA local alignment, 
+       2004, BMC Bioinformatics, 5:149. 
+

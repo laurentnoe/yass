@@ -1,0 +1,144 @@
+Yass-1.01 [dec 2002]
+- first public version in december 2002 : in fact, i started this program,
+together with many other things that were never finished, during my
+master internship that started around march/april 2002... good
+old time :-) 
+
+Yass-1.02 [september 2003]
+- output entropy filter on alignments
+- transition constrainted spaced seeds added
+- alignments methods revised (alignement speed ~ x1.3)
+- hit criteria revised (speed ~ x1.2)
+- many bugs solved 
+
+Yass-1.03 [october 2003]
+- BLAST tabular like output
+- multifasta support with file selection (-S)
+- more scoring matrices
+- less global variables ;-)
+- autoconf format added (that's helpfull)
+
+Yass-1.04 [november 2003]
+- -r 2 option changed
+- bug with missed alignments solved (alignandfree take the MAX now)
+- -T option only affect direct repeats on one single file ... (no
+palindromic ones)
+- align algorithm changed (adequate greedy selection made more efficiently)
+
+Yass-1.05 [august 2004]
+- Blast tabular output / header
+- Matrix cost options
+- Lambda/K value can be changed by hand.
+- Xdrop modifications / Expectation value to cut off
+- Seed has changed (optimised on random sequences / with constrain on
+jokers and transitions free elements) 
+- several bugs solved (Thanks, Martin !!)
+- problem with W,S letters partially solved (replacement) 
+- first version of the web interface was done by Ougas ELMI HOUSSEIN [during summer internship]
+
+Yass-1.06 [november 2004]
+-  -W option for grouping DNA fragmented alignements
+   [ work done by Steven CORROY (in only two months during summer 2004!! good job),
+     -  some specifics bugs have been solved since.
+     -  several Warnings and optimizations for the -W option.
+     -  improved methods both in implementation and also definition.
+   ]
+-  optimized alignment between seeds and greedy one over seeds (now i have to optimize the core "assemble" part).
+-  -O0 non optimization bug removed (strange one, isnt it ?)
+-  "||||15120" number on alignment display removed
+-  random walk polynom computed now with qpow (faster, of course ;-) )
+
+Yass-1.07   (work done by Christophe VALMIR) [february 2005]
+- Cache efficient list structure 
+- Add Diagonal hash table        
+- One multi fasta BUG solved
+
+Yass-1.08   (work done by Christophe VALMIR) [july 2005]
+- Extension MA BUG solved
+- Regroup BUG solved
+- Lambda and K computed cordance with sequences selected
+- Make -C option for modifed  scoring matrices
+- Yass used a multi-seed
+- The substitution matrix was changed (default:-M 3)
+- Bug for compiling MAC solved
+
+Yass-1.09   (work done by Christophe VALMIR) [october 2005]
+- thread for the -r 2 option (only with "configure --with-thread").
+- -r 2 option is the default option
+- Bug for scoring solved.
+- More regrouped.
+
+Yass-1.10   (back to LN) [october 2005 - december 2006]
+- cosmetic and optimisation work (debugging of -r 2 )
+- redefinition of several functions
+- key-compress bug solved 
+  (now all these options can be selected from the util.h)
+- one-multifasta bug solved
+- several macro redefined 
+- extention algorithms updated
+- memory check option for standalone version
+- statitics for each thread
+- More regrouping.
+
+Yass-1.11 [january 2007 - april 2007]
+- lowercase regions parameter
+- unusual letters complements bug solved
+- entropy on spaced words ...
+- output sorted according to 4 criteria (+ 4 )
+- new parsing script
+- due to a general demand, i have changed the "." and ":", now they
+represent tranversions "." and transition ":" repectively
+- key only composed of pairs of amino acids are removed
+- MEMOPT type bug solved (i forget some copy)
+
+Yass-1.12 [sept 2007 - december 2007]
+- single hit added as an option ... group size has been removed.
+- low complexity now does not interfer between threads ... global
+variables were shared before.
+- Gumbel Law Lambda and K are computed with full consideration of the
+background nucleotide distribution for both sequences ...
+- bug solved when left alignment was computed : some unreleavants
+positions were added.
+- bug solved when runs of 'N' were complemented.
+- bug solved on multiseed span linking
+- bug solved on the rightmost alignments
+- bug solved on initial -M scoring parameter
+
+Yass-1.13
+  "Houston, we've had a problem here"
+
+Yass-1.14 (* : work done by Antoine DE MONTE) [january 2008 - january 2013]
+* multifasta "full support" (for the first file too, with the "-S 0" parameter)
+* multithreading improved, parametrized for the multifasta first file
+* 64 bits support (files larger than 2Gb)
+- PSL output format added
+- bug solved on multiseed span linking
+- bug solved on the rightmost alignments
+- several bugs solved on the alignment_SG_Border part
+- bug solved on the min_max_span of the default seed (inverted ?? does not appear in previous versions)
+- bug on the "mask copy" (RedMask function)
+- new implementation of the greedy "align tuples" functions
+- bug on "-c 1" tuple size (was corrected during extention ... now solved during hit)
+- many improvements in the "align.c" main method x 2 ... work in progress on this part ...
+- most of the alignments are now provided by the heuristic "Border" functions (banded alignment) + 2 bugs solved on it
+- output bug (on one case, indels were numbered ...)
+- sort on %identity (query/text/alignment) added 
+- hash cache table removed (not used)
+- parser modified (bug on inner '>' when fasta file is incorrectly formatted) + memory on header kept
+- bug on single file extention (when following the main diagonal)
+- autotools "-lm" option changed from LDFLAGS to LIBS (does not change the compiled version ...)
+- heuritic "improved" on resolve_overlaps "hits" (more DP-Alignment is done when this case occurs :
+  this do not apply however on non resolve_overlaps "hits" that are thus "seed pattern dependent".
+
+Yass-1.15 : [january 2013 ...]
+- Small improvement on first file (query) index on multifasta : avoid the "more than quadratic time" (due to reuse of kword first index)
+  it is better than before, but no still perfect has it does not build index on multifasta file into a single index.
+- dereferencing pointer compiler warning fixed
+- bug on the index "imask" overflow fixed (not detected before : compiler issue ?)
+- small bug on bad Entropy value (small difference) fixed (found by Aude Darrack), fixed in 1.15 [november 2014]
+- not a bug: some warning added on the seed pattern when bad ones are in the input
+- First hit (tuple) selection [Ongoing]
+- Disabling the assemble_align thread at very first time, or for small sequences [august 2015]
+- Fixing a regroup scoring evaluation (optimistic way with overlaps) + a regroup window increment
+- Patching a Resolve_Overlap annoying Bug [april 2016]
+- Patching a Lazy Alignment large indel Bug + some valgrind [may 2016]
