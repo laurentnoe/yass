@@ -1,0 +1,277 @@
+.TH YASS 1 "26 September 2006" Linux "Short User Manual"
+.SH NAME
+yass \- pairwise aligments of low conserved genomic regions
+.SH SYNOPSIS
+.B yass
+[\fIOPTIONS\fR] {\fIfile1.mfas\fR \fIfile2.mfas\fR}
+.SH DESCRIPTION
+.PP
+.B yass 
+is a genomic (DNA/RNA) sequence local alignment tool based on
+subset seeds to reach high sensitivity on low similarity regions. The
+input format is fasta or multifasta. The output 
+format may be chosen directly and/or modified to match full blast output,
+axt or fasta format alignments, using the yass2blast.pl script (<http://bioinfo.lifl.fr/yass/files/yass2blast.pl>)
+.P
+yass accepts any single/multiple seeds as a parameter using the "\-p
+##-@-#,##--#@#" parameter. Seeds can be designed by hand or by using the 
+.B hedera 
+tool (<http://bioinfo.lifl.fr/yass/hedera.php>)
+in order to detect your alignments more efficiently.
+.SH OPTIONS
+.TP
+\fB\-d <int>\fP, \fB\-\-display <int>\fP 
+.RS
+.PD 0
+.IP 0.
+display positions, length, and E-value (kept for compatibility issues)
+.IP 1.
+display positions, length, and E-value + statistics and alignments shown (default)
+.IP 2.
+display a blast tabular output
+.IP 3.
+display a light tabular output (easier to parse)
+.IP 4.
+display a BED output
+(see the BED format specification at <http://genome.ucsc.edu/FAQ/FAQformat#format1>)
+.IP 5.
+display a PSL output 
+(see the PSL format specification at <http://genome.ucsc.edu/FAQ/FAQformat#format2>)
+.PD
+.RE
+.PP
+\fB\-r <int>\fR, \fB\-\-reverse <int>\fR
+.RS
+.PD 0
+.IP 0.
+process forward (first file) strain
+.IP 1.
+process reverse complement (first file) strain
+.IP 2.
+process both (default)
+.PD
+.RE
+.TP
+\fB\-o <str>\fR, \fB\-\-output <str>\fR
+.RS
+set an output file
+.RE
+.TP
+\fB\-l\fR, \fB\-\-lowercase\fR
+.RS
+mask lowercase regions : this only takes effect on the index algorithm.
+It is thus still possible to have lowercase regions in extended parts of an
+uppercase region, or between two uppercase regions.
+.RE
+.TP
+\fB\-s <int>\fR, \fB\-\-sort <int>\fR
+.RS
+sort results according to :
+.PD 0
+.IP 0. 
+alignment scores
+.IP 1.
+entropy (interesting on RNA sequences)
+.IP 2.
+mutual information content (experimental)
+.IP 3.
+both entropy and scores
+.IP 4. 
+first sequence positions
+.IP 5.
+second sequence positions
+.IP 10-15.
+equivalent to (0-5) + sort by first fasta chunks first
+.IP 20-25.
+equivalent to (0-5) + sort by second fasta chunks first
+.IP 30-35.
+equivalent to (0-5) + sort by both first/second chunks first
+.IP 40-45.
+equivalent to (10-15) + sort chunk results with (0-5) criterion (first
+fasta file)
+.IP 50-55.
+equivalent to (20-25) + sort chunk results with (0-5) criterion (second fasta file)
+.IP 60-65.
+equivalent to (30-35) + sort chunk results with (0-5) criterion (first fasta file)
+.IP 70-75. 
+(30-35) + sort chunk results with (0-5) criterion (second fasta file)
+.IP 80-85.
+(30-35) + sort chunk results with (0-5) criterion (both fasta files)
+.PD
+(default 70)
+.RE
+.TP
+\fB\-v\fR, \fB\-\-version\fR 
+.RS
+display the current version
+.RE
+.TP
+\fB\-M <int>\fR, \fB\-\-Matrix <int>\fR
+.RS
+select a predefined scoring matrix :
+.TP
+[Match,Transversion,Transition],(Gopen,Gext)
+.PD 0
+.IP 0.
+[1,-3,-2],( -8,-2)
+.IP 1.
+[3,-2,-1],(-12,-4)
+.IP 2.
+[3,-4,-2],(-16,-4)
+.IP 3.
+[5,-4,-2],(-16,-4)
+.PD
+.RE
+.TP
+\fB\-C <int>[,<int>[,<int>[,<int>]]]\fR, \fB\-\-Costs <int>[,<int>[,<int>[,<int>]]]\fR
+.RS
+reset substitution costs for :
+.PD 0
+.IP -
+match,mismatch
+.IP -
+match,mismatch,transition
+.IP -
+match,mismatch,transition,other
+.PD
+you can also give the 16 values of matrix in the ACGT order.
+.RE
+.TP
+\fB\-G <int>,<int>\fR, \fB\-\-Gaps <int>,<int>\fR
+.RS
+reset Gap opening/extension penalties
+.RE
+.TP
+\fB\-L <real>,<real>\fR, \fB\-\-Lambda <real>,<real>\fR
+.RS
+reset Lambda and K parameters of Gumbel law (by default computed)
+.RE
+.TP
+\fB\-X <int>\fR, \fB\-\-Xdrop <int>\fR
+.RS
+reset Xdrop threshold score (default 25)
+.RE
+.TP
+\fB\-E <float>\fR, \fB\-\-Evalue <float>\fR
+.RS
+reset E-value threshold (default 10)
+.RE
+.TP
+\fB\-O <int>\fR, \fB\-\-nbO <int>\fR
+.RS
+limit number of alignments in the output (default 5000000)
+.RE
+.TP
+\fB\-S <int>\fR, \fB\-\-nbS <int>\fR
+.RS
+select the chunk sequence from the  first multi-fasta sequence
+(default 1 is the first one). 
+Note that the
+.B -S 0 
+parameter enumerates all the chunks of the first multifasta sequence
+.RE
+.TP
+\fB\-T <int>\fR, \fB\-\-Tandems <int>\fR
+.RS
+forbid aligning too close regions (e.g. Tandem repeats)
+valid for single sequence comparison only (default 16 bp)
+.RE
+.TP
+\fB\-c <int>\fR, \fB\-\-hitcriterion <int>\fR 
+.RS
+select the hit criterion, i.e. number of single hit needed to consider
+a match, it can be 1 (single hit criterion) as blast or 2 (default behavior).
+.RE
+.TP
+\fB\-p <str>[,str...]\fR, \f\-\-pattern <str>[,str...]\fR 
+.RS
+seed pattern, represented over the alphabet {'#','@','-'}. Each seed is a
+string and you are allowed to use several seed patterns separated by ','
+.PD 0
+.IP -
+symbol '#' is a must-match position, pair of nucleotides under these
+positions must have to be similar.
+.IP -
+symbol '@' is a transition-free position, pair of nucleotides under these
+positions have to be in the same purin-purin or pyrimidin-pyrimidin group. Thus
+transitions mismatches are allowed by this element.
+.IP -
+symbol '-' is called joker, in the sense that any pair of nucleotides
+is allowed.
+.PD
+.RE
+.TP
+.RS
+you are allowed to use at most 32 seeds
+.TP
+examples :
+.PD 0
+.IP - 
+  yass file.fas -p  "#@#--##--#-##@#"
+.IP -
+  yass file.fas -p "##-#-#@#-##@-##,##@#--@--##-#--###"
+.PD
+.RE
+.TP
+\fB\-e <real>\fR, \fB\-\-entropy <real>\fR
+.RS
+minimal allowed Entropy of trinucleotide distribution. Range between 0 (no filter) and 6, default 2.80
+.RE
+.TP
+\fB\-t <real>\fR, \fB\-\-trim <real>\fR 
+.RS
+trim out over-represented seeds codes, range between 0.0 (no trim) and +inf, default 0.001
+.RE
+.TP              
+\fB\-a <int>\fR, \fB\-\-alpha <int>\fR, 
+.RS
+statistical tolerance Alpha (%), (default 5%) : it gives the
+percent of allowed runs of seeds that may be missed on a
+waiting time distribution, and thus separated into two alignments.
+.RE
+.TP
+\fB\-i <int>\fR, \fB\-\-indels <int>\fR, 
+.RS
+Indel rate (%) used in the waiting time distribution
+.RE
+.TP
+\fB\-m <int>\fR, \fB\-\-mutations <int>\fR
+.RS
+Mutation rate (%) used in the waiting time distribution
+.RE
+.TP
+\fB\-W <int>,<int>\fR, \fB\-\-Windows <int>\fR
+.RS
+In order to group some consecutive alignments into a better
+scoring one, post processing tries to group neighbor alignments in
+an iterative process : by applying several time a sliding windows
+on the text and estimating score of possible groups formed.
+Windows size can be controlled according to a geometric pattern
+-w  <mul> and two bounds -W <min,max>.
+.RE
+.TP
+\fB\-w <real>\fR, \fB\-\-window <real>\fR 
+.RS
+Window geometric pattern (see -W option)
+.RE
+.PP
+.SH NOTES
+.PP 
+.B yass
+post processing can be disabled with the "-w 0" parameter.
+Repeats filters can be almost disabled with some " -e 0 -t 0 -E
+1000000 -O 1000000 " parameter.
+.PP
+The last of any
+.B -C
+, 
+.B -G
+options and 
+.B -M
+option overrides the previous ones.
+.PP
+.B yass 
+main page is <http://bioinfo.lifl.fr/yass/>, a web-server is available
+at <http://bioinfo.lifl.fr/yass/yass.php>
+.SH "SEE ALSO"
+.B blast2(1),wise(1),sim4(1)
