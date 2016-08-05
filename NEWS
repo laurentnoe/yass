@@ -142,3 +142,6 @@ Yass-1.15 : [january 2013 ...]
 - Fixing a regroup scoring evaluation (optimistic way with overlaps) + a regroup window increment
 - Patching a Resolve_Overlap annoying Bug [april 2016]
 - Patching a Lazy Alignment large indel Bug + some valgrind [may 2016]
+- Changing the behavior of -s 6x to avoid redudancy with -s 4x [august 2016]
+  Now similar to -s 7x (BLAST), with the difference that the queries blocks
+  are not kept in the same order as input, but ordered by their best overall score ...
