@@ -1,27 +1,3 @@
-/*
- *  YASS 1.15
- *  Copyright (C) 2004-2016
- *  the YASS team
- *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
- *  Steven Corroy, Antoine De Monte, Christophe Valmir.
- *
- *  laurent.noe|<A>|univ-lille1.fr
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the CeCILL License as published by
- *  the CEA-CNRS-INRIA; either version 2 of the License, or (at your
- *  option) any later version, and the GNU General Public License as
- *  published by the Free Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- *  This software contains code derived from the GNU libavl library.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -358,6 +334,7 @@ long int SortCriterionPercentIdentityText(MA * ma) {
 long int SortBlocksCriterionQueryNumber(MA * ma)        { return (long int) (ma->j_chunk); }
 long int SortBlocksCriterionTextNumber(MA * ma)         { return (long int) (ma->i_chunk); }
 long int SortBlocksCriterionQueryTextNumber(MA * ma)    { return (long int) (ma->j_chunk)+(ma->i_chunk)*gp_nbchunks_text; }
+long int SortBlocksCriterionTextQueryNumber(MA * ma)    { return (long int) (ma->i_chunk)+(ma->j_chunk)*gp_nbchunks_query; }
 
 /*
  * ListSort
@@ -501,7 +478,7 @@ void MergeSort_MAList(MA * first_MA, MA * last_MA) {
 
   if (first_MA && gv_first_MA) {
 
-    if (
+    if ( /* [FIXME] */
         (gp_sortblockscriterion == 1) || (gp_sortblockscriterion == 3) ||
         (gp_sortblockscriterion == 4) || (gp_sortblockscriterion >= 6)
        ) {

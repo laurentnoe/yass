@@ -1,27 +1,3 @@
-/*
- *  YASS 1.15
- *  Copyright (C) 2004-2016
- *  the YASS team
- *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
- *  Steven Corroy, Antoine De Monte, Christophe Valmir.
- *
- *  laurent.noe|<A>|univ-lille1.fr
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the CeCILL License as published by
- *  the CEA-CNRS-INRIA; either version 2 of the License, or (at your
- *  option) any later version, and the GNU General Public License as
- *  published by the Free Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- *  This software contains code derived from the GNU libavl library.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
 #ifndef __TUPLE_H_
 #define __TUPLE_H_
 
@@ -247,23 +223,24 @@ void LeftCorrection_MA(MA * ma, long int left_correction);
 
 /* sorting functions : for one MA */
 typedef long int (SortCrit) (MA *);
-long int SortCriterionScore(MA * ma)            ;
-long int SortCriterionEntropy(MA * ma)          ;
-long int SortCriterionMutual(MA * ma)           ;
-long int SortCriterionScoreWithEntropy(MA * ma) ;
-long int SortCriterionQueryBegin(MA * ma)       ;
-long int SortCriterionTextBegin(MA * ma)        ;
+long int SortCriterionScore(MA * ma);
+long int SortCriterionEntropy(MA * ma);
+long int SortCriterionMutual(MA * ma);
+long int SortCriterionScoreWithEntropy(MA * ma);
+long int SortCriterionQueryBegin(MA * ma);
+long int SortCriterionTextBegin(MA * ma);
 long int SortCriterionPercentIdentityAlign(MA * ma);
 long int SortCriterionPercentIdentityQuery(MA * ma);
-long int SortCriterionPercentIdentityText(MA * ma) ;
+long int SortCriterionPercentIdentityText(MA * ma);
 
 
 
 /* sorting functions : gives blocks consistency */
 typedef long int (SortBlocksCrit) (MA *);
-long int SortBlocksCriterionQueryNumber(MA * ma)   ;
-long int SortBlocksCriterionTextNumber(MA * ma)    ;
+long int SortBlocksCriterionQueryNumber(MA * ma);
+long int SortBlocksCriterionTextNumber(MA * ma);
 long int SortBlocksCriterionQueryTextNumber(MA * ma);
+long int SortBlocksCriterionTextQueryNumber(MA * ma);
 
 /* recursive function */
 

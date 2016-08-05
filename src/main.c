@@ -1,27 +1,3 @@
-/*
- *  YASS 1.15
- *  Copyright (C) 2004-2016
- *  the YASS team
- *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
- *  Steven Corroy, Antoine De Monte, Christophe Valmir.
- *
- *  laurent.noe|<A>|univ-lille1.fr
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the CeCILL License as published by
- *  the CEA-CNRS-INRIA; either version 2 of the License, or (at your
- *  option) any later version, and the GNU General Public License as
- *  published by the Free Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- *  This software contains code derived from the GNU libavl library.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
 #define _GNU_SOURCE
 
 #include <stdio.h>
@@ -82,15 +58,16 @@ static void usage()
         "                  8 : 2nd file sequence %% id\n"
         );
   fprintf(stderr,
-        "                  10-18 : (0-8) + sort by first fasta chunks first\n"
-        "                  20-28 : (0-8) + sort by second fasta chunks first\n"
-        "                  30-38 : (0-8) + sort by both first/second chunks first\n");
+        "                  10-18 : (0-8) + sort by \"first fasta-chunk order\"\n"
+        "                  20-28 : (0-8) + sort by \"second fasta-chunk order\"\n"
+        "                  30-38 : (0-8) + sort by \"both first/second chunks order\"\n");
   fprintf(stderr,
-        "                  40-48 : (10-18) + sort chunk results with (0-8) criterion (first fasta file)\n"
-        "                  50-58 : (20-28) + sort chunk results with (0-8) criterion (second fasta file)\n"
-        "                  60-68 : (30-38) + sort chunk results with (0-8) criterion (first fasta file)\n"
-        "                  70-75 : (30-38) + sort chunk results with (0-8) criterion (second fasta file)\n"
-        "                  80-85 : (30-38) + sort chunk results with (0-8) criterion (both fasta files)\n"
+        "                  40-48 : equivalent to (10-18) where \"best score for fst fasta-chunk\" replaces \"...\"\n"
+        "                  50-58 : equivalent to (20-28) where \"best score for snd fasta-chunk\" replaces \"...\"\n");
+  fprintf(stderr,
+        "                  60-68 : equivalent to (70-78), where \"sort by best score of fst fasta-chunk\" replaces \"...\"\n"
+        "                  70-78 : BLAST-like behavior : \"keep fst fasta-chunk order\", then trigger all hits for all good snd fasta-chunk\n"
+        "                  80-88 : equivalent to (30-38) where \"best score for fst/snd fasta-chunk\"\" replaces \"...\"\n"
         );
   fprintf(stderr,
         "      -v       display the current Version\n");
@@ -248,19 +225,6 @@ static void error(char *E1, char *E2, char *E3)
     usage();
 }
 
-static void warning(char *E1, char *E2, char *E3)
-{
-    SETCOLOR(stderr, RED);
-    fprintf(stderr, "* Warning : ");
-    RESET(stderr);
-    fprintf(stderr,"\" ");
-    fprintf(stderr,"%s", E1);
-    fprintf(stderr,"%s", E2);
-    fprintf(stderr,"%s", E3);
-    fprintf(stderr," \"\n");
-}
-
-
 /*
  * read several seed patterns separated with ','
  */
@@ -301,7 +265,7 @@ static void parseoutfile(int argc, char ** argv, long int * i) {
     error("\"",argv[(*i)-1],"\" found without filename");
   gv_outstream = fopen(argv[*i],"w");
   if (!gv_outstream)
-    error("Can't create file \"",argv[*i],"\"");
+    error("Can't create output file \"",argv[*i],"\"");
 }
 
 /*
@@ -874,7 +838,7 @@ void * thread_query_chunk(void *num)
       q_chunk_rev = gp_query_rev + gp_chunkstrt_query[current_chunk_nb];
 
       if (q_size < gp_seeds_span_min) {
-      error("selected query chunk \"", gp_files[0], "\" is too small to be indexed, please change the seed with the \'-p \"##-#\"\' parameter");
+        _ERROR("selected query chunk of the first file is too small to be indexed, please change the seed with the \'-p \"<seed pattern>\"\' parameter");
       }
 
       minscore =  MinScore(gp_k_blast, gp_lambda_blast,
@@ -901,7 +865,7 @@ void * thread_query_chunk(void *num)
       RESETFEATURE(gv_feature[i][1], minscore, q_chunk_rev, q_size, 1, current_chunk_nb);
 #ifdef THREAD_FORWARD_REVERSE
       CREATE_THREAD(gv_feature[i][1]->thread_assemble,
-                  thread_work_assemble,gv_feature[i][1]);
+                    thread_work_assemble,gv_feature[i][1]);
 #else
       thread_work_assemble((void *) gv_feature[i][1]);
 #endif
@@ -913,11 +877,11 @@ void * thread_query_chunk(void *num)
 
 #ifdef THREAD_FORWARD_REVERSE
       if (gp_reverse != 1) {
-      WAIT_THREAD(gv_feature[i][0]->thread_assemble);
+        WAIT_THREAD(gv_feature[i][0]->thread_assemble);
       }
 
       if (gp_reverse) {
-      WAIT_THREAD(gv_feature[i][1]->thread_assemble);
+        WAIT_THREAD(gv_feature[i][1]->thread_assemble);
       }
 #endif
 
@@ -926,15 +890,16 @@ void * thread_query_chunk(void *num)
        */
 
       {
-      MA * first_MA = NULL, * last_MA = NULL;
-      /* the function merges the forward and reverse part */
-      MergeSort_forward_reverse(gv_feature[i][0],gv_feature[i][1],&first_MA,&last_MA);
+        MA * first_MA = NULL, * last_MA = NULL;
+        /* the function merges the forward and reverse part */
+        MergeSort_forward_reverse(gv_feature[i][0],gv_feature[i][1],&first_MA,&last_MA);
 
-      if ((gp_sortblockscriterion >= 5))
-        ListSort_MAList(&first_MA,&last_MA,0x40000000,TRUE);
+        /* [FIXME] */
+        if ((gp_sortblockscriterion >= 5))
+          ListSort_MAList(&first_MA,&last_MA,0x40000000,TRUE);
 
-      /* this function locks the main "gv_first/last_MA" list */
-      MergeSort_MAList(first_MA,last_MA);
+        /* this function locks the main "gv_first/last_MA" list */
+        MergeSort_MAList(first_MA,last_MA);
       }
     } /* else ... */
   } while (test == 0); /* while ... */
@@ -1035,18 +1000,18 @@ int main(int argc, char *argv[]) {
     if (gp_nbfiles > 0) {
       if (gp_nbchunks_query == 1) {
         if (gp_chunksize_query[0] < gp_seeds_span_min) {
-          error("first datafile \"", gp_files[0], "\" is too small to be indexed with the current seed. Please change the seed with the \'-p \"##-#-##\"\' parameter");
+          _ERROR("first file is too small to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
         }
       } else {
         if (gp_nbchunks_query > 1) {
           int i;
           for (i = 0; i < gp_nbchunks_query; i++) {
             if (gp_chunksize_query[i] < gp_seeds_span_min) {
-              error("first datafile \"", gp_files[0], "\" contains too small chunks to be indexed with the current seed. Please change the seed with the \'-p \"##-#-##\"\' parameter");
+              _ERROR("first file contains too small chunks to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
             }
           }
         } else {
-          error("first datafile \"", gp_files[0], "\" is empty or incorrect fasta/multifasta file");
+          _ERROR("first file is empty or incorrect fasta/multifasta file");
         }
       }
     }
@@ -1055,19 +1020,19 @@ int main(int argc, char *argv[]) {
     if (gp_nbfiles > 1) {
       if (gp_nbchunks_text == 1) {
         if (gp_chunksize_text[0] < gp_seeds_span_min) {
-          error("second datafile \"", gp_files[1], "\" is too small to be indexed with the current seed. Please change the seed with the \'-p \"##-#-##\"\' parameter");
+          _ERROR("second file is too small to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
         }
       } else {
         if (gp_nbchunks_text > 1) {
           int i;
           for (i = 0; i < gp_nbchunks_text; i++) {
             if (gp_chunksize_text[i] < gp_seeds_span_min) {
-              warning("second datafile \"", gp_files[1], "\" contains small chunks that will be ignored using the current seed. Please change the seed with the \'-p \"##-#-##\"\' parameter\n");
+              _WARNING("second file contains small chunks that will be ignored using the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter\n");
               break;
             }
           }
         } else {
-          error("second datafile \"", gp_files[1], "\" is empty or incorrect fasta/multifasta file");
+          _ERROR("second file is empty or incorrect fasta/multifasta file");
         }
       }
     }
@@ -1165,8 +1130,7 @@ int main(int argc, char *argv[]) {
       }
     } else {
       if (gp_nbchunks_query < gp_selection_fasta) {
-        error("selected fastachunk does not exist in\"", gp_files[0],
-              "\" file , please check your -S parameter");
+        _ERROR("selected fasta chunk does not exist in the first file, please check your -S parameter");
       }
       gv_chunk_nb     = gp_selection_fasta-1;
       gv_chunk_nb_end = gp_selection_fasta;
@@ -1193,13 +1157,17 @@ int main(int argc, char *argv[]) {
     thread_query_chunk((void *)(&(gv_thread_num[0])));
 #endif
 
+    /* [FIXME] */
+    if (gp_sortblockscriterion == 6) 
+      gp_sortblockscriterion_func = SortBlocksCriterionQueryNumber;
+    
     if ((gp_sortblockscriterion == 4) || (gp_sortblockscriterion == 6) || (gp_sortblockscriterion == 8))
       ListSort_MAList(&gv_first_MA,&gv_last_MA,0x40000000,TRUE);
 
 
 
 #ifdef DEBUG_LISTMA
-    DisplayListMA (gv_first_MA);
+    DisplayListMA(gv_first_MA);
 #endif
 
     Display_Alignements(gv_first_MA);

@@ -1,27 +1,3 @@
-/*
- *  YASS 1.15
- *  Copyright (C) 2004-2016
- *  the YASS team
- *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
- *  Steven Corroy, Antoine De Monte, Christophe Valmir.
- *
- *  laurent.noe|<A>|univ-lille1.fr
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the CeCILL License as published by
- *  the CEA-CNRS-INRIA; either version 2 of the License, or (at your
- *  option) any later version, and the GNU General Public License as
- *  published by the Free Software Foundation; either version 2 of the
- *  License, or (at your option) any later version.
- *
- *  This software contains code derived from the GNU libavl library.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
 #include <stdio.h>
 
 /* 1) include utils macro */
@@ -142,19 +118,19 @@ long int *  gp_chunkstrt_text = NULL;
 
 /* statistical variables */
 long int    gp_nb_letters[2][4] =   { { 0, 0, 0, 0
-                            },{ 0, 0, 0, 0
-			    } }; /* number of 'A','T','G','C' for each file */
+                                    },{ 0, 0, 0, 0
+                                    } }; /* number of 'A','T','G','C' for each file */
 double **   gp_freq_letters /* [2][4] */ = NULL ;
                            /* frequency of 'A','T','G','C' for each file */
 long int    gp_nb_triplets[2][64] = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                            },{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-			    } }; /* number of 'AAA','AAT', ... 'CCC' for each file */
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                                    },{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                                    } }; /* number of 'AAA','AAT', ... 'CCC' for each file */
 double **   gp_freq_background;        /* 4x4 */
 double **   gp_freq_tripletbackground; /* 64x64 */
 
@@ -223,7 +199,7 @@ SortBlocksCrit * sortblockscriteria[NBSORTBLOCKSCRITERIA] =
   NULL,
   SortBlocksCriterionQueryNumber,
   SortBlocksCriterionTextNumber,
-  SortBlocksCriterionQueryNumber,
+  SortBlocksCriterionTextNumber,/* [FIXME] */
   SortBlocksCriterionTextNumber,
   SortBlocksCriterionQueryTextNumber
 };
