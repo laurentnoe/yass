@@ -383,7 +383,7 @@ long int CreateData(/* in */  char *filename,
           chunkname_buffer[c] = '\0';
           chunkname[j] = (char *) MALLOC((c+1) * sizeof(char));
           ASSERT(chunkname[j],CreateData);
-          strncpy(chunkname[j],chunkname_buffer,c);/*FIXME*/
+          strncpy(chunkname[j],chunkname_buffer,c);/* FIXME : who put a fixme here ? */
           chunkname[j][c]     = '\0';
         }
         j++;
@@ -945,7 +945,7 @@ long int CreateKeyList( /* in */  char *data,         /* in  */ long int datasiz
     listcompress =  (long int *) MALLOC( (nbkeys + feature->keycode_first_list_pos_size[seed]) * sizeof(long int));
   } else {
     /* full */
-    /* add only one extrat key for the 1<<(2*w) key code */
+    /* add only one extra key for the 1<<(2*w) key codes */
     listcompress =  (long int *) MALLOC( (nbkeys + 1) * sizeof(long int));
   }
   ASSERT(listcompress, CreateKeyList);
@@ -979,6 +979,9 @@ long int CreateKeyList( /* in */  char *data,         /* in  */ long int datasiz
         u = list[u];
       }
     }
+    /* last element must be -1, but we prefer padding the end with -1 */
+    while (i <= nbkeys)
+      listcompress[i++] = -1;
     feature->keycode_first[seed][sizeofbucket] = i;
   }
 #endif
