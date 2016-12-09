@@ -258,15 +258,17 @@ static void parsepattern(int argc, char ** argv, long int * i) {
   (*i)++;
   if (*i >= argc)
     error("\"",argv[*i-1],"\" found without motif");
-    if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'T') || strchr(argv[*i],'X') || strchr(argv[*i],'x') ))
-      error("pattern \"",argv[*i],"\"  doesn't have any \"#,1\" / \"@,T,X,x\" symbol");
-
-  gp_nb_seeds = 0;
+  if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'T') || strchr(argv[*i],'X') || strchr(argv[*i],'x') ))
+    error("pattern \"",argv[*i],"\"  doesn't have any \"#,1\" / \"@,T,X,x\" symbol");
+  /* free previous seeds and set gp_nb_seeds to zero */
+  while (gp_nb_seeds > 0) {
+    gp_nb_seeds--;
+    FREE(gp_motifs[gp_nb_seeds],sizeof(strlen()+1));
+  }
   s_begin = argv[*i];
   while (1) {
     if (gp_nb_seeds == MAX_SEED)
       error("pattern \"",argv[*i-1],"\" has too many seeds");
-
     s_end = strchr(s_begin,',');
     if (s_end) {
       *s_end = '\0';
@@ -756,25 +758,25 @@ DWORD WINAPI thread_work_assemble(PVOID fvoid)
 
   if (gp_nbfiles == 2) {
     MultiAssemble_Double(f->chunk_query, f->chunk_query_size,
-                   gp_text, gp_textsize, gp_nbchunks_text,
-                   gp_chunkname_text, gp_chunksize_text,
-                   gp_chunkstrt_text, f);
+                         gp_text, gp_textsize, gp_nbchunks_text,
+                         gp_chunkname_text, gp_chunksize_text,
+                         gp_chunkstrt_text, f);
 
   } else {
     if (gp_nbchunks_query > 1) {
       /* FIXME : need  MultiAssemble_SingleRev which does no report comparison on the same diagonal neither the half top matrix */
       MultiAssemble_Double(f->chunk_query, f->chunk_query_size,
-                     gp_text, gp_textsize, gp_nbchunks_text,
-                     gp_chunkname_text, gp_chunksize_text,
-                     gp_chunkstrt_text, f);
+                           gp_text, gp_textsize, gp_nbchunks_text,
+                           gp_chunkname_text, gp_chunksize_text,
+                           gp_chunkstrt_text, f);
     } else {
       if (f->reverse)
       Assemble_SingleRev(f->chunk_query,
-                     gp_query + gp_chunkstrt_query[f->j_chunk],
-                     f->chunk_query_size, f);
+                         gp_query + gp_chunkstrt_query[f->j_chunk],
+                         f->chunk_query_size, f);
       else
-      Assemble_Single   (f->chunk_query,
-                     f->chunk_query_size, f);
+        Assemble_Single   (f->chunk_query,
+                           f->chunk_query_size, f);
     }
   }
 
@@ -875,23 +877,23 @@ void * thread_query_chunk(void *num)
 #endif
 
       if (gp_reverse != 1) {
-      RESETFEATURE(gv_feature[i][0], minscore, q_chunk, q_size, 0, current_chunk_nb);
+        RESETFEATURE(gv_feature[i][0], minscore, q_chunk, q_size, 0, current_chunk_nb);
 #ifdef THREAD_FORWARD_REVERSE
-      CREATE_THREAD(gv_feature[i][0]->thread_assemble,
-                  thread_work_assemble,gv_feature[i][0]);
+        CREATE_THREAD(gv_feature[i][0]->thread_assemble,
+                      thread_work_assemble,gv_feature[i][0]);
 #else
-      thread_work_assemble((void *) gv_feature[i][0]);
+        thread_work_assemble((void *) gv_feature[i][0]);
 #endif
       }
 
 
       if (gp_reverse) {
-      RESETFEATURE(gv_feature[i][1], minscore, q_chunk_rev, q_size, 1, current_chunk_nb);
+        RESETFEATURE(gv_feature[i][1], minscore, q_chunk_rev, q_size, 1, current_chunk_nb);
 #ifdef THREAD_FORWARD_REVERSE
-      CREATE_THREAD(gv_feature[i][1]->thread_assemble,
-                    thread_work_assemble,gv_feature[i][1]);
+        CREATE_THREAD(gv_feature[i][1]->thread_assemble,
+                      thread_work_assemble,gv_feature[i][1]);
 #else
-      thread_work_assemble((void *) gv_feature[i][1]);
+        thread_work_assemble((void *) gv_feature[i][1]);
 #endif
       }
 
@@ -918,7 +920,7 @@ void * thread_query_chunk(void *num)
         /* the function merges the forward and reverse part */
         MergeSort_forward_reverse(gv_feature[i][0],gv_feature[i][1],&first_MA,&last_MA);
 
-        /* [FIXME] */
+        /* [FIXME : should be modified for 6x, so this part is subject to some changes] */
         if ((gp_sortblockscriterion >= 5))
           ListSort_MAList(&first_MA,&last_MA,0x40000000,TRUE);
 
@@ -958,7 +960,7 @@ int main(int argc, char *argv[]) {
 
 
     /* Init scoring matrix */
-    gp_substitution_matrix = lint_directtable(32,32);
+    gp_substitution_matrix = lint_directtable(32,32,0);
     fillmatrixmttrtv();
 
     /* Init semaphores */
@@ -1079,11 +1081,11 @@ int main(int argc, char *argv[]) {
      */
 
     /* a) triple letters */
-    gp_freq_tripletbackground    = computeBackgroundTripletFrequency(gp_nb_triplets);
+    computeBackgroundTripletFrequency(gp_nb_triplets, gp_freq_tripletbackground);
 
     /* b) single letter */
-    gp_freq_letters              = computeLettersFrequency(gp_nb_letters);
-    gp_freq_background           = computeBackgroundFrequency(gp_freq_letters);
+    computeLettersFrequency(gp_nb_letters, gp_freq_letters);
+    computeBackgroundFrequency(gp_freq_letters, gp_freq_background);
 
     /* c) correct matrix according to background single letter probabilities */
     if (gp_adhoc_matrix == 0) {
@@ -1181,10 +1183,10 @@ int main(int argc, char *argv[]) {
     thread_query_chunk((void *)(&(gv_thread_num[0])));
 #endif
 
-    /* [FIXME] */
-    if (gp_sortblockscriterion == 6) 
+    /* [FIXME : should be modified for 6x, so this part is subject to some changes] */
+    if (gp_sortblockscriterion == 6)
       gp_sortblockscriterion_func = SortBlocksCriterionQueryNumber;
-    
+
     if ((gp_sortblockscriterion == 4) || (gp_sortblockscriterion == 6) || (gp_sortblockscriterion == 8))
       ListSort_MAList(&gv_first_MA,&gv_last_MA,0x40000000,TRUE);
 
