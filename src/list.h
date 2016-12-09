@@ -38,9 +38,9 @@
 
 
 typedef struct _table_MA {
-    long int index;
-    long int table_blastscore[CUSTOMER_SIZE];
-    struct _list_MA *table[CUSTOMER_SIZE];
+  long int size;
+  long int table_blastscore[CUSTOMER_SIZE];
+  struct _list_MA *table[CUSTOMER_SIZE];
 } table_MA;
 
 
@@ -50,24 +50,20 @@ typedef struct _table_MA {
 */
 
 typedef struct _list_MA {
-
-    MA *ma;
-    struct _list_MA *next;
-    struct _list_MA *prev;
-    struct _list_MA *itself; /* the same but inside the queue from the tree */
-    struct _table_MA *customer;
-    struct _table_MA *producer;
-
+  MA *ma;
+  struct _list_MA *next;  /* double linked list */
+  struct _list_MA *prev;
+  struct _list_MA *itself; /* the same link, but "inside" the queue when used from the tree */
+  struct _table_MA *customer;
+  struct _table_MA *producer;
 } list_MA;
 
 
-/*Queue of MA*/
+/* Queue of MA */
 
 typedef struct _queue_MA {
-
     struct _list_MA *first;
     struct _list_MA *last;
-
 } queue_MA;
 
 

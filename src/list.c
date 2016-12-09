@@ -43,7 +43,6 @@ void display_queue(queue_MA * q)
 {
 
     list_MA *l = q->first;
-
     while (l) {
       printf("|(%ld,%ld,adr=%p,blast=%ld)",
              DIAGB(l->ma),
@@ -77,7 +76,7 @@ void display_table(table_MA * t)
 /*
 * void new_data (tree_data *data, tree_data *data_sn, list_MA *itself)
 *
-* Fill a tree_data field (link the list field)
+* Fill a tree_data field (and link the list field)
 */
 
 #ifdef INLINE
@@ -97,10 +96,10 @@ inline
     first = (list_MA *)MALLOC(sizeof(list_MA));
     ASSERT(first, "new_data()");
     memset(first, 0, sizeof(list_MA));
-    first->ma = itself->ma;
+    first->ma     = itself->ma;
+    first->itself = itself;
     first->next = NULL;
     first->prev = NULL;
-    first->itself = itself;
 
     /* and a new tree_data  */
     data->distance = DIAGB(itself->ma);
@@ -109,26 +108,10 @@ inline
     data->queue.first = first;
     data->queue.last  = first;
 
+    /* After that we link the lists field of the tree data structure */
+    if (data_sn) {  /* "sn" means "smallest nearest" */
 
-    first->customer = (table_MA *)MALLOC(sizeof(table_MA));
-    ASSERT(first->customer, "new_data()");
-    memset(first->customer, 0, sizeof(table_MA));
-    table_MA_init(first->customer);
-
-
-
-
-    first->producer = (table_MA *)MALLOC(sizeof(table_MA));
-    ASSERT(first->producer, "new_data()");
-    memset(first->producer, 0, sizeof(table_MA));
-    table_MA_init(first->producer);
-
-    /*After that we link the lists field of the tree data structure */
-
-    if (data_sn) {            /* "sn" means "smallest nearest" */
-
-      /*if a smaller element than data exists */
-
+      /* if a smaller element than data exists */
       next = data_sn->list[1];
 
       if (data_sn->distance > data->distance) {
@@ -140,8 +123,7 @@ inline
 
       } else {
 
-          /*if data is the smallest element */
-
+          /* if data is the smallest element */
           data->list[0] = data_sn;
           data_sn->list[1] = data;
 
@@ -168,22 +150,19 @@ inline
 #ifdef INLINE
 inline
 #endif
-void free_data(tree_data * data)
-{
-
-    tree_data *prev;
-    tree_data *next;
-
-    prev = data->list[0];
-    next = data->list[1];
-    data->list[0] = NULL;
-    data->list[1] = NULL;
-    if (prev != NULL) {
-      prev->list[1] = next;
-    }
-    if (next != NULL) {
-      next->list[0] = prev;
-    }
+void free_data(tree_data * data) {
+  /* jump the linked list over this "tree_data" */
+  tree_data *prev = data->list[0];
+  tree_data *next = data->list[1];
+  if (prev != NULL) {
+    prev->list[1] = next;
+  }
+  if (next != NULL) {
+    next->list[0] = prev;
+  }
+  /* erase any link of this "tree_data", but dont "free" it */
+  data->list[0] = NULL;
+  data->list[1] = NULL;
 }
 
 
@@ -197,11 +176,11 @@ void free_data(tree_data * data)
 inline
 #endif
     list_MA * queue_push_and_sort_MA(queue_MA * q,
-                             MA * item,
-                             list_MA * itself)
-{
+                                     MA * item,
+                                     list_MA * itself) {
     list_MA *next_list_MA;
     list_MA *curr_list_MA = (q->last);
+
     list_MA *new_list_MA  = (list_MA *) MALLOC(sizeof(list_MA));
     ASSERT(new_list_MA, "queue_push_and_sort_MA");
 
@@ -209,12 +188,12 @@ inline
     new_list_MA->ma     = item;
     new_list_MA->next   = NULL;
     new_list_MA->prev   = NULL;
-    new_list_MA->customer = NULL; /* unused */
-    new_list_MA->producer = NULL; /* unused */
+    new_list_MA->customer = NULL; /* unused in the queue */
+    new_list_MA->producer = NULL; /* unused in the queue */
     new_list_MA->itself = itself;
 
 
-    /* Insert "new_list_MA" at the right position */
+    /* Insert "new_list_MA" at the right position in the queue */
     while (curr_list_MA) {
       if (curr_list_MA->ma->right_pos_end <= item->right_pos_end)
           break;
@@ -251,23 +230,24 @@ inline
 #ifdef INLINE
 inline
 #endif
-    list_MA * queue_pop_MA(queue_MA * q)
-{
+list_MA * queue_pop_MA(queue_MA * q) {
 
-    list_MA *curr_list_MA = q->first;
+  list_MA *curr_list_MA = q->first;
 
-    if (curr_list_MA) {
-      if (q->first == q->last) {
-          q->first = NULL;
-          q->last = NULL;
-      } else {
-          q->first = curr_list_MA->next;
-          if (curr_list_MA->next)
-            curr_list_MA->next->prev = NULL;
-          curr_list_MA->next = NULL;
-      }
+  if (curr_list_MA) {
+    if (q->first == q->last) {
+      q->first = NULL;
+      q->last  = NULL;
+    } else {
+      q->first = curr_list_MA->next;
+      if (q->first)
+        q->first->prev = NULL;
+      /* separate the list_MA from any link ... */
+      curr_list_MA->next = NULL;
+      curr_list_MA->prev = NULL;
     }
-    return curr_list_MA;
+  }
+  return curr_list_MA;
 }
 
 
@@ -323,82 +303,57 @@ inline
 #endif
 void table_MA_init(table_MA * T)
 {
-
     long int i;
-
-    T->index = 0;
+    T->size = 0;
     for (i = 0; i < CUSTOMER_SIZE; i++) {
-      T->table[i] = NULL;
+      T->table[i]            = NULL;
       T->table_blastscore[i] = 0;
-
     }
-
 }
 
 
 #ifdef INLINE
 inline
 #endif
-long int table_MA_insert(table_MA * T, list_MA * insere, long int dscore,
-                list_MA * l)
-{
+long int table_MA_insert(table_MA * T, list_MA * insert, long int dscore, list_MA * l) {
 
     long int curr = 0;            /* used to sort the table */
-    list_MA *old_list;
 
-    /* if the table is full */
-
-    if (T->index >= CUSTOMER_SIZE) {
-
-      /*if our MA has to be inserted */
-
+    /* if the table is already full */
+    if (T->size >= CUSTOMER_SIZE) {
+      /* if our MA has to be inserted */
       if (dscore > T->table_blastscore[CUSTOMER_SIZE - 1]) {
-
           /* we delete the MA with the lowest score */
-
-          old_list = T->table[CUSTOMER_SIZE - 1];
-          T->table[CUSTOMER_SIZE - 1] = insere;
+          list_MA *old_list = T->table[CUSTOMER_SIZE - 1];
+          T->table           [CUSTOMER_SIZE - 1] = insert;
           T->table_blastscore[CUSTOMER_SIZE - 1] = dscore;
           curr = CUSTOMER_SIZE - 1;
-
           /* we signal to other MA the deletion */
-
           if (l->producer == T)
             table_MA_delete(old_list->customer, l);
-          else if (l->customer == T)
+          if (l->customer == T)
             table_MA_delete(old_list->producer, l);
-          else
-            _WARNING
-                ("table_MA_insert() : missing l in concurrent list");
-
       } else {
-
           return 0;
-
       }
-
     } else {
-
-      /*if the table is not full */
-
-      T->table[T->index] = insere;
-      T->table_blastscore[T->index] = dscore;
-      curr = T->index;
-      T->index++;
-
+      /* if the table is not full */
+      T->table           [T->size] = insert;
+      T->table_blastscore[T->size] = dscore;
+      curr = T->size;
+      T->size++;
     }
 
 
     /* table sort */
     while (curr > 0 && T->table_blastscore[curr] > T->table_blastscore[curr - 1]) {
-      long int old_dscore;
-      old_list = T->table[curr];
-      old_dscore = T->table_blastscore[curr];
+      list_MA *old_list   = T->table[curr];
+      long int old_dscore = T->table_blastscore[curr];
 
-      T->table[curr] = T->table[curr - 1];
+      T->table[curr]            = T->table[curr - 1];
       T->table_blastscore[curr] = T->table_blastscore[curr - 1];
 
-      T->table[curr - 1] = old_list;
+      T->table[curr - 1]            = old_list;
       T->table_blastscore[curr - 1] = old_dscore;
 
       curr--;
@@ -412,23 +367,27 @@ long int table_MA_insert(table_MA * T, list_MA * insere, long int dscore,
 #ifdef INLINE
 inline
 #endif
-long int table_MA_delete(table_MA * T, list_MA * suppr)
-{
-  long int i = 0, j = 0;
-    
-  while (i < CUSTOMER_SIZE) {
+long int table_MA_delete(table_MA * T, list_MA * suppr) {
+  long int i = 0;
+  while (i < T->size) {
     if (T->table[i] == suppr)
       break;
     i++;
   }
 
-  if (i == CUSTOMER_SIZE)
+  if (i == T->size) {
     _WARNING("table_MA_delete() element not found");
-  
-  for (j = i; j < CUSTOMER_SIZE - 1; j++)
-    T->table[j] = T->table[j + 1];
-  
-  T->table[CUSTOMER_SIZE - 1] = NULL;
-  T->index--;
+    return 0;
+  }
+
+  T->size--;
+
+  for (; i < T->size; i++) {
+    T->table           [i] = T->table[i + 1];
+    T->table_blastscore[i] = T->table_blastscore[i + 1] ;
+  }
+
+  T->table           [T->size] = NULL;
+  T->table_blastscore[T->size] = 0;
   return 1;
 }
