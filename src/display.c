@@ -64,7 +64,7 @@ void Display_Alignements(MA * first_MA) {
     fprintf(OUTSTREAM,"# s. id,\ts. start,\ts. end,\tstrand,\tq. start,\tq. end,\tbit score\te-value\t%%identity\n");
   } else if (gp_display == 5) {
     /* This one is for PSL files */
-    /* FIXME : add a header (needed ??) */
+    /* FIXME : add a header for PSL output (but needed ??) */
   }
 
   /* [1] Effective display of each Memorized Alignment */
