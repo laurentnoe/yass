@@ -122,10 +122,10 @@ extern long int   * gp_chunkstrt_text;
 
 /* statistics on each sequence */
 extern long int       gp_nb_letters[2][4];
-extern double ** gp_freq_letters/* 2x4 */;
+extern double         gp_freq_letters[2][4];
 extern long int       gp_nb_triplets[2][64];
-extern double ** gp_freq_background/* 4x4 */;
-extern double ** gp_freq_tripletbackground/* 64x64 */;
+extern double         gp_freq_background[4][4];
+extern double         gp_freq_tripletbackground[64][64];
 
 /* lockup/code reverals and other stuff */
 extern char lookup[32];
