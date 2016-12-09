@@ -145,3 +145,5 @@ Yass-1.15 : [january 2013 ...]
 - Changing the behavior of -s 6x to avoid redudancy with -s 4x [august 2016]
   Now similar to -s 7x (BLAST), with the difference that the queries blocks
   are not kept in the same order as input, but ordered by their best overall score ...
+- Solving some memory leak, uninitialized value, and a bug in "regroup.c": cleaning on customer but not on producer [december 2016]
+
