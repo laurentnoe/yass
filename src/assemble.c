@@ -144,7 +144,8 @@ long int Assemble_Single(/*in*/ char * data, /*in*/ long int datasize, Feature *
 #endif
 
   /* to keep lists of tuple found */
-  f->last_tl  = f->first_tl    = CreateTupleList();
+  if (!f->first_tl)
+    f->last_tl = f->first_tl = CreateTupleList();
 
   /* [0] left correction factor set to zero */
   f->left_correction =  0;
@@ -491,10 +492,11 @@ long int Assemble_SingleRev(/*in*/   char * datarev, /*in*/  char * data, /*in*/
 #endif
 
   /* to keep lists of tuple found */
-  f->last_tl  = f->first_tl    = CreateTupleList();
+  if (!f->first_tl)
+    f->last_tl = f->first_tl = CreateTupleList();
 
-  /* left correction factor set to keysize_query */
-  f->left_correction =  keysize_query;
+  /* [0] left correction factor set to keysize_query */
+  f->left_correction = keysize_query;
 
   MEMOPT_SETMOD;
 
@@ -851,7 +853,8 @@ long int MultiAssemble_Double(char * data_query, long int datasize_query,
 #endif
 
   /* to keep lists of tuple found */
-  f->last_tl  = f->first_tl = CreateTupleList();
+  if (!f->first_tl)
+    f->last_tl = f->first_tl = CreateTupleList();
 
   {
     long int i_chunk;
