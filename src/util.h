@@ -32,7 +32,7 @@ double C(long int n, long int k);
 long int size_lint(long int i);
 void strnsub(char *buffer, char *motif, long int n, char c);
 void unit   (long int in, /* out */ long int * p_out , /* out */ char * p_c);
-long int  ** lint_directtable(long int i, long int j);
+long int  ** lint_directtable(long int i, long int j, long int value);
 void         lint_free_directtable(long int ** dtable, long int i, long int j);
 double **    dbl_directtable(long int i, long int j);
 void         dlb_free_directtable(double ** dtable, long int i, long int j);
@@ -65,7 +65,7 @@ int long_int_cmp(const void *pi, const void *pj);
 /* #define THREAD_QUERY_CHUNK
  */
 
-#define MAX_QUERY_CHUNK_THREADS 2
+#define MAX_QUERY_CHUNK_THREADS 4
 
 
 /* Enable modulo memopt
@@ -163,7 +163,7 @@ int long_int_cmp(const void *pi, const void *pj);
 #define PACKAGE_NAME "yass"
 #endif
 #ifndef PACKAGE_VERSION
-#define PACKAGE_VERSION "1.12"
+#define PACKAGE_VERSION "1.15"
 #endif
 
 

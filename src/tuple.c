@@ -22,7 +22,6 @@
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -502,7 +501,7 @@ void MergeSort_MAList(MA * first_MA, MA * last_MA) {
 
   if (first_MA && gv_first_MA) {
 
-    if ( /* [FIXME] */
+    if ( /* [FIXME : should be modified for 6x, so this part is subject to some changes] */
         (gp_sortblockscriterion == 1) || (gp_sortblockscriterion == 3) ||
         (gp_sortblockscriterion == 4) || (gp_sortblockscriterion >= 6)
        ) {

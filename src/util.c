@@ -41,11 +41,11 @@ double dpow(double mant, long int puis)
     long int i;
 
     for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-	if (puis & 0x00000001) {
-	    result *= c_puis;
-	}
-	c_puis *= c_puis;	/* mant^2  mant^4  mant^8 etc ... */
-	puis >>= 1;
+        if (puis & 0x00000001) {
+            result *= c_puis;
+        }
+        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
+        puis >>= 1;
     }
     return result;
 }
@@ -58,11 +58,11 @@ long int ipow(long int mant, long int puis)
     long int i;
 
     for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-	if (puis & 0x00000001) {
-	    result *= c_puis;
-	}
-	c_puis *= c_puis;	/* mant^2  mant^4  mant^8 etc ... */
-	puis >>= 1;
+        if (puis & 0x00000001) {
+            result *= c_puis;
+        }
+        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
+        puis >>= 1;
     }
     return result;
 }
@@ -76,11 +76,11 @@ long double ldpow(double mant, long int puis)
     long int i;
 
     for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-	if (puis & 0x00000001) {
-	    result *= c_puis;
-	}
-	c_puis *= c_puis;	/* mant^2  mant^4  mant^8 etc ... */
-	puis >>= 1;
+        if (puis & 0x00000001) {
+            result *= c_puis;
+        }
+        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
+        puis >>= 1;
     }
     return result;
 }
@@ -99,9 +99,9 @@ double C(long int n, long int k)
     double denum = 1;
 
     for (i = n - k + 1; i <= n; i++)
-	num *= (double) i;
+        num *= (double) i;
     for (i = 2; i <= k; i++)
-	denum *= (double) i;
+        denum *= (double) i;
 
     return num / denum;
 }
@@ -118,15 +118,15 @@ long int size_lint(long int i)
 {
     long int result = 0;
     if (i < 0)
-	result++;
+        result++;
 
     if (i == 0)
-	result = 1;
+        result = 1;
     else
-	while (i != 0) {
-	    i /= 10;
-	    result++;
-	}
+        while (i != 0) {
+            i /= 10;
+            result++;
+        }
     return result;
 }
 
@@ -136,19 +136,21 @@ long int size_lint(long int i)
  */
 
 
-long int ** lint_directtable(long int i, long int j)
+long int ** lint_directtable(long int i, long int j, long int value)
 {
   long int ** itable;
   long int *  jtable;
-  long int k;
+  long int k,l;
 
   itable = (long int **) MALLOC((unsigned) (i * sizeof(long int *)) + (i * j * sizeof(long int)));
   ASSERT(itable,int_directtable);
   jtable = (long int *) (itable + i);
 
-  for(k=0 ; k<i; k++)
+  for(k=0; k<i; k++) {
     itable[k] = jtable + k * j;
-
+    for(l=0; l<j; l++)
+      itable[k][l] = value;
+  }
   return itable;
 }
 
