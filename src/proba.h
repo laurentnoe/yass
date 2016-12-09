@@ -39,12 +39,12 @@ long int MinScore(double K, double Lambda, long int query_size, long int text_si
 double BitScore(double K, double Lambda, long int score);
 double P_mutation_bias(long int freq[]);
 
-double ** computeLettersFrequency(long int nb_letters[2][4]);
-double ** computeBackgroundFrequency(double ** letters_frequency /* [2][4] */);
-double ** computeBackgroundTripletFrequency(long int nb_words[2][64]);
+void computeLettersFrequency(long int nb_letters[2][4], /* out */ double letters_frequency[2][4]);
+void computeBackgroundFrequency(double letters_frequency[2][4], /* out */ double background_frequency[4][4]);
+void computeBackgroundTripletFrequency(long int nb_triplets[2][64], /* out */ double probabilities[64][64]);
 
-double computeLambda(double ** freq_letters /* [2][4] */);
-double computeK(double ** freq_letters /* [2][4] */, double lambda);
+double computeLambda(double freq_letters[2][4]);
+double computeK(double freq_letters[2][4], double lambda);
 
 double entropyTriplet(long int * count /* [4^3]*/);
 double mutualInformationTriplet(long int ** count /* [4^3] x [4^3] */);
