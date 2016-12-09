@@ -22,7 +22,6 @@
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -58,10 +57,15 @@ if (TEL_POS(tb) >= TBL_POS(ta) && TER_POS(tb) >= TBR_POS(ta)) {                 
   _WARNING("negative gap size in RESOLVE_OVERLAPS");                              \
   DisplayTuple(ta);DisplayTuple(tb);fflush(NULL);                                 \
   if (TSIZE(ta) <= TSIZE(tb) && pta) {                                            \
-       pta->next = ta->next; /* FIXME : free memory */                            \
+    pta->next = ta->next;                                                         \
+    FREE(ta,sizeof(tuple));                                                       \
+    ta = pta->next;                                                               \
   } else {                                                                        \
-       ta->next  = ta->next->next; /* FIXME : free memory */                      \
-  } goto full_restart;                                                            \
+    tuple * __t__ = ta->next;                                                     \
+    ta->next  = ta->next->next;                                                   \
+    FREE(__t__,sizeof(tuple));                                                    \
+  }                                                                               \
+  goto full_restart;                                                              \
 }
 
 #define MEMORISE_IN_DISPLAY_OR_ERASE(prev_first_ta,first_ta,last_ta,t_score)                      { \
