@@ -185,7 +185,7 @@ else
 fi
 
 
-CFLAGS="$CFLAGS -O3 -Wall -ansi -pedantic -funroll-loops -pipe -fomit-frame-pointer "
+CFLAGS="$CFLAGS -O3 -Wall -funroll-loops -pipe -fomit-frame-pointer "
 LIBS="$LIBS -lm"
 
 AC_SUBST(CFLAGS)
