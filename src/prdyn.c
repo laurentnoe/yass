@@ -22,7 +22,6 @@
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -581,8 +580,8 @@ long int left_alignment_SG_Border(char * data1, long int pos1, long int len1,
 
       /* MinMax evaluations */
       while (jmin < bandwidth
-	     && bm1[jmin] < -XDROP
-	     && bm0[jmin] < -XDROP)
+             && bm1[jmin] < -XDROP
+             && bm0[jmin] < -XDROP)
         {
           bm0[jmin] = -INFINITY_INT;
           bm1[jmin] = -INFINITY_INT;
@@ -591,8 +590,8 @@ long int left_alignment_SG_Border(char * data1, long int pos1, long int len1,
           jmin++;
         }
       while (jmax > bandwidth
-	     && bm1[jmax] < -XDROP
-	     && bm0[jmax] < -XDROP)
+             && bm1[jmax] < -XDROP
+             && bm0[jmax] < -XDROP)
         {
           bm0[jmax] = -INFINITY_INT;
           bm1[jmax] = -INFINITY_INT;
@@ -683,8 +682,8 @@ long int left_alignment_SG_Border(char * data1, long int pos1, long int len1,
 
       /* MinMax evaluations */
       while (jmin < bandwidth
-	     && bm1[jmin] < -XDROP
-	     && bm0[jmin] < -XDROP)
+             && bm1[jmin] < -XDROP
+             && bm0[jmin] < -XDROP)
         {
           bm0[jmin] = -INFINITY_INT;
           bm1[jmin] = -INFINITY_INT;
@@ -693,8 +692,8 @@ long int left_alignment_SG_Border(char * data1, long int pos1, long int len1,
           jmin++;
         }
       while (jmax > bandwidth
-	     && bm1[jmax] < -XDROP
-	     && bm0[jmax] < -XDROP)
+             && bm1[jmax] < -XDROP
+             && bm0[jmax] < -XDROP)
         {
           bm0[jmax] = -INFINITY_INT;
           bm1[jmax] = -INFINITY_INT;
@@ -830,8 +829,8 @@ long int right_alignment_SG_Border(char * data1, long int pos1, long int len1,
 
       /* MinMax evaluations */
       while (jmin < bandwidth
-	     && bm1[jmin] < -XDROP
-	     && bm0[jmin] < -XDROP)
+             && bm1[jmin] < -XDROP
+             && bm0[jmin] < -XDROP)
         {
           bm0[jmin] = -INFINITY_INT;
           bm1[jmin] = -INFINITY_INT;
@@ -840,8 +839,8 @@ long int right_alignment_SG_Border(char * data1, long int pos1, long int len1,
           jmin++;
         }
       while (jmax > bandwidth
-	     && bm1[jmax] < -XDROP
-	     && bm0[jmax] < -XDROP)
+             && bm1[jmax] < -XDROP
+             && bm0[jmax] < -XDROP)
         {
           bm0[jmax] = -INFINITY_INT;
           bm1[jmax] = -INFINITY_INT;
@@ -932,8 +931,8 @@ long int right_alignment_SG_Border(char * data1, long int pos1, long int len1,
 
       /* MinMax evaluations */
       while (jmin < bandwidth
-	     && bm1[jmin] < -XDROP
-	     && bm0[jmin] < -XDROP)
+             && bm1[jmin] < -XDROP
+             && bm0[jmin] < -XDROP)
         {
           bm0[jmin] = -INFINITY_INT;
           bm1[jmin] = -INFINITY_INT;
@@ -942,8 +941,8 @@ long int right_alignment_SG_Border(char * data1, long int pos1, long int len1,
           jmin++;
         }
       while (jmax > bandwidth
-	     && bm1[jmax] < -XDROP
-	     && bm0[jmax] < -XDROP)
+             && bm1[jmax] < -XDROP
+             && bm0[jmax] < -XDROP)
         {
           bm0[jmax] = -INFINITY_INT;
           bm1[jmax] = -INFINITY_INT;
@@ -1586,8 +1585,8 @@ long int left_alignment_SG_stats_Border(char * data1, long int pos1, long int le
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
 
 
   /* [1] compute */
@@ -2240,8 +2239,8 @@ long int right_alignment_SG_stats_Border(char * data1, long int pos1, long int l
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,right_alignment_SG_stats_Border);
@@ -2720,8 +2719,8 @@ long int alignment_SG_stats_Border(char * data1, long int pos1, long int len1,
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,alignment_SG_stats_Border);
@@ -3531,8 +3530,8 @@ long int left_alignment_SG_PSL_Border(char * data1, long int pos1, long int len1
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
 
 
   /* [1] compute */
@@ -4147,8 +4146,8 @@ long int right_alignment_SG_PSL_Border(char * data1, long int pos1, long int len
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,right_alignment_SG_PSL_Border_noflush);
@@ -4820,8 +4819,8 @@ long int alignment_SG_PSL_Border(char * data1, long int pos1, long int len1,
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,alignment_SG_PSL_Border);
@@ -5516,13 +5515,13 @@ long int display_left_alignment_SG_Border_noflush(long int querychunk, long int 
   /* various switch elements to access information */
   long int row1       = 2*bandwidth + 1;
 
- /* various switch elements to access information */
+  /* various switch elements to access information */
   long int width       = 2*bandwidth + 1;
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
 
 
   /* [1] compute */
@@ -6144,8 +6143,8 @@ long int display_right_alignment_SG_Border_noflush(long int querychunk, long int
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,display_right_alignment_SG_Border_noflush);
@@ -6614,8 +6613,8 @@ long int display_alignment_SG_Border_noflush(long int querychunk, long int rever
   long int height      = MIN(len1,len2) + 1;
 
   /* dp tables */
-  long int ** mt = lint_directtable(height,width);
-  long int ** in = lint_directtable(height,width);
+  long int ** mt = lint_directtable(height,width,-INFINITY_INT);
+  long int ** in = lint_directtable(height,width,-INFINITY_INT);
   long int k = 0;
   backtrack_SG *  bk = (backtrack_SG*) MALLOC( (len1+len2+1) * sizeof(backtrack_SG));
   ASSERT(bk,display_alignment_SG_Border_noflush);
