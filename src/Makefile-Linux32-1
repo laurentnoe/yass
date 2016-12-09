@@ -1,6 +1,6 @@
 CC       = gcc
 STRIP    = strip
-CFLAGS   = -m32 -Wall -ansi -pedantic -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.15\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+CFLAGS   = -m32 -Wall -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.15\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
 CFLAGS  += -march=i686 -mtune=nocona -mmmx -ftree-vectorize
 LDFLAGS  = -static
 SOURCES  = align.c assemble.c avl.c display.c global_var.c \
