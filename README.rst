@@ -58,6 +58,7 @@ common usage
 -S <N>
   to select *only one* sequence in the first multifasta file (give a
   number between 1 and nbparts).
+  
   By default *all the sequences* are processed.
 
 
