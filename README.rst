@@ -44,37 +44,70 @@ Command-line
 
 (more at  http://bioinfo.lifl.fr/yass/help.php)
 
-The commonly used command-line parameters are :
+The commonly used command-line parameters are
 
--d N
+-d <N>
   where N = [0..5], to select the output format (default is 1)
 
--r N
+-r <N>
   where N = [0..2] to select the *forward*, *reverse*, or *both*
   sense on the first sequence (default is *both*)
 
- 
-For the scoring system:
-
--C N(,N...)
-   with 2,3,4 or 16 parameters to give the
-   * Match/Mismacth scores,
-   * Match/Transition/Transversion scores,
-   * Match/Transition/Transversion/Other IUPAC scores,
-   * 4x4 ACGT matrix (and disable scoring correction algorithm).
-
- 
--G NO,NE
-    with two parameters to change the cost for the first gap opening NO,
-    and subsequent extension costs NE.
 
 
--E N  to set the E-value threshold N (default 10).
 
 
--X N  to set  the X-drop threshold score N (default 25).
+For the scoring system, you can use
+
+-C <N,(N,...)>
+  with 2,3,4 or 16 parameters to give the:
+  
+  - Match/Mismacth scores,
+  - Match/Transition/Transversion scores,
+  - Match/Transition/Transversion/Other IUPAC scores,
+  - 4x4 ACGT matrix (and disable scoring correction algorithm).
+  
+
+-G <NO,NE>
+  with two parameters to change the cost for the first gap opening NO,
+  and subsequent extension costs NE.
 
 
+-E <N>  to set the E-value threshold N (default 10).
+
+
+-X <N>  to set  the X-drop threshold score N (default 25).
+
+and
+
+-L <NL,NK>
+  to possibly change the Lambda and K values if the one computed do
+  not correspond to your needs.
+  (Note that the ALP tool can do the work :
+  https://www.ncbi.nlm.nih.gov/CBBresearch/Spouge/html_ncbi/html/software/program.html?uid=6
+  )
+
+
+
+
+
+For the search parameters, you can use
+
+
+-p <"seedpattern">
+    where the seed pattern is one, or several seeds separated by
+    comma, where each seed  is a word on the "#@-" alphabet
+    
+    (Note that the Iedera tool can do the design :
+    https://github.com/LaurentNoe/iedera
+    )
+
+-c <N>
+   where N = [1..2] for single or double hit criterion
+
+
+   
+  
 Example
 -------
 
