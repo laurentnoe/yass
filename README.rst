@@ -42,12 +42,11 @@ or copy the binary directly to your homedir::
 Command-line
 ------------
 
-common usage
-~~~~~~~~~~~~
-
 (more at  http://bioinfo.lifl.fr/yass/help.php)
 
-The commonly used command-line parameters are
+
+common usage
+~~~~~~~~~~~~
 
 -d <N>
   where *N = [0..5]*, to select the output format (default is 1)
@@ -58,16 +57,14 @@ The commonly used command-line parameters are
 
 -S <N>
   to select *only one* sequence in the first multifasta file (give a
-  number between 1 and nbparts). By default *all the sequences* are  
-  processed.
+  number between 1 and nbparts).
+  By default *all the sequences* are processed.
 
 
 scoring system
 ~~~~~~~~~~~~~~
 
-For the scoring system, you can use
-
--C <N,N,..>
+-C <N,...>
   with 2,3,4 or 16 parameters to give the:
   
   - Match/Mismatch scores,
@@ -89,8 +86,8 @@ For the scoring system, you can use
 and
 
 -L <Nl,Nk>
-  to possibly change the Lambda *Nl* and K *Nk* values if the one computed do
-  not correspond to your needs.
+  to possibly change the Lambda *Nl* and K *Nk* values
+  if the one computed do not correspond to your needs.
   (Note that the ALP tool can do the work:
   https://www.ncbi.nlm.nih.gov/CBBresearch/Spouge/html_ncbi/html/software/program.html?uid=6
   )
@@ -98,10 +95,6 @@ and
 
 search parameters
 ~~~~~~~~~~~~~~~~~
-
-
-For the search parameters, you can use
-
 
 -p <"seedpattern">
     where the seed pattern is one, or several seeds separated by
