@@ -75,8 +75,10 @@ scoring system
   
 
 -G <No,Ne>
-  with two parameters to change the cost for the first gap opening *No*,
-  and subsequent extension costs *Ne*.
+  with two parameters to change the cost for:
+
+  - the very first gap opening *No*,
+  - the subsequent extension costs *Ne*.
 
 
 -E <N>  to set the E-value threshold *N* (default 10).
