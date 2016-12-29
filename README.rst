@@ -30,7 +30,16 @@ Using the command line, type::
   cd yass
   ./configure
   make
-  
+
+or::
+
+  git clone https://github.com/laurentnoe/yass.git
+  cd yass
+  autoreconf
+  ./configure
+  automake
+  make
+
 you can install  ``yass`` to a standard ``/local/bin`` directory::
 
   sudo make install
