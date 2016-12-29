@@ -2,3 +2,6 @@ language : c
 compiler:
   - clang
   - gcc
+
+
+touch aclocal.m4 configure Makefile.am Makefile.in src/Makefile.am src/Makefile.in doc/Makefile.am doc/Makefile.in
