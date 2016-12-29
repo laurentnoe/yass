@@ -2,7 +2,6 @@ language : c
 compiler:
   - clang
   - gcc
-  
 script:
-  - ./configure && make
-  - ./configure --with-threads && make
+  - autoreconf && ./configure                && automake && make
+  - autoreconf && ./configure --with-threads && automake && make
