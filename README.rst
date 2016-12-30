@@ -1,3 +1,16 @@
+
+.. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=AppVeyor%20CI
+    :target: https://ci.appveyor.com/project/laurentnoe/yass/
+    :alt: Build Status Windows
+
+.. image:: https://img.shields.io/travis/laurentnoe/yass/master.svg?style=flat-square&label=Travis%20CI
+    :target: https://travis-ci.org/laurentnoe/yass/
+    :alt: Build Status Unix
+
+..  imagehttps://img.shields.io/coveralls/laurentnoe/yass/master.svg?style=flat-square&label=Coveralls
+    targethttps://coveralls.io/github/laurentnoe/yass
+    altCoverage Status
+
 yass
 ====
 
