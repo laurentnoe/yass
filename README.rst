@@ -7,6 +7,10 @@
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status Windows
 
+.. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.lifl.fr.svg?style=flat-square&label=Website
+    :target: https://bioinfo.lifl.fr/yass/
+    :alt: Website
+
 ..  imagehttps://img.shields.io/coveralls/laurentnoe/yass/master.svg?style=flat-square&label=Coveralls
     targethttps://coveralls.io/github/laurentnoe/yass
     altCoverage Status
