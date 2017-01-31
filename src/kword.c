@@ -426,12 +426,32 @@ long int CreateData(/* in */  char *filename,
               chunksize[i], chunkstart[i], chunkname[i]);
 #endif
 
-    /* (4) */
-    /* FIXME : set some low complexity filter here ... */
+    /* (4) FIXME : set some low complexity filter here ... */
+
+    /* (5) Compute the reverse-complement statitics for each letter, and for each word */
+    {
+      {
+        long int c = 0;
+        long int nbl[4];
+        for (c = 0; c < 4; c++)
+          nbl[c] = nb_letters[c];
+        for (c = 0; c < 4; c++)
+          nb_letters[c] += nbl[3^c]; /* reverse-complement ~ (3 - c) */
+      }
+      {
+        long int c = 0;
+        long int nbt[64];
+        for (c = 0; c < 64; c++)
+          nbt[c] = nb_triplets[c];
+        for (c = 0; c < 64; c++) {
+          long int w = (((c & 0x30) >> 4) | (c & 0xc) | ((c & 0x3) << 4)) ^ 0x3f; /* reverse-complement each triple */
+          nb_triplets[c] += nbt[w];
+        }
+      }
+    }
 
 
-
-    /* (5) return allocated and computed data */
+    /* (6) return allocated and computed data */
     *p_datasize = datasize;
     *p_data = data;
     if (p_nbchunks != NULL)
