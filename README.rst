@@ -158,3 +158,10 @@ A second example where the scoring system is modified, the E-value changed::
 
   
 
+References
+----------
+
+how to cite this tool:
+
+    Noe L., Kucherov G., YASS: enhancing the sensitivity of DNA similarity search, 2005, Nucleic Acids Research, 33(2):W540-W543. <http://doi.org/10.1093/nar/gki478>
+
