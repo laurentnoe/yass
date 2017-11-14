@@ -1,11 +1,11 @@
 /*
  *  YASS 1.15
- *  Copyright (C) 2004-2016
+ *  Copyright (C) 2004-2017
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
  *  Steven Corroy, Antoine De Monte, Christophe Valmir.
  *
- *  laurent.noe|<A>|univ-lille1.fr
+ *  laurent.noe|<A>|univ-lille.fr
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the CeCILL License as published by

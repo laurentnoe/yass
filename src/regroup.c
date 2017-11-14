@@ -1,11 +1,11 @@
 /*
  *  YASS 1.15
- *  Copyright (C) 2004-2016
+ *  Copyright (C) 2004-2017
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
  *  Steven Corroy, Antoine De Monte, Christophe Valmir.
  *
- *  laurent.noe|<A>|univ-lille1.fr
+ *  laurent.noe|<A>|univ-lille.fr
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the CeCILL License as published by
@@ -827,7 +827,11 @@ MA * main_regroup(MA * first_MA, Feature *feature) {
         prev_MA->next = current_MA;
       } else {
         _WARNING("main_regroup() : prev_MA undefined"); /* FIXME : this test was not here before */
-        feature->last_MA  = prev_MA = current_MA; /* FIXME : dangerous on the first tuple, but the first tuple will never be deleted, even if grouped (extended ?) */
+        if ( feature->last_MA !=  feature->first_MA) {
+          feature->last_MA  = prev_MA = current_MA; /* FIXME : dangerous on the first tuple, but the first tuple will never be deleted, even if grouped (extended ?) */
+        } else {
+          feature->first_MA = feature->last_MA  = prev_MA = current_MA; /* FIXME : this is a Hotfix */
+        }
       }
       FREE(to_free_MA,sizeof(MA));
     } else {

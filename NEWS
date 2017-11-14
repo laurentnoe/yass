@@ -146,4 +146,5 @@ Yass-1.15 : [january 2013 ...]
   Now similar to -s 7x (BLAST), with the difference that the queries blocks
   are not kept in the same order as input, but ordered by their best overall score ...
 - Solving some memory leak, uninitialized value, and a bug in "regroup.c": cleaning on customer but not on producer [december 2016]
-
+- Probability stats computed on forward/reverse strand [february 2017]
+- Hotfix on regroup [july 2017]

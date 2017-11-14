@@ -7,8 +7,8 @@
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status Windows
 
-.. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.lifl.fr.svg?style=flat-square&label=Website
-    :target: https://bioinfo.lifl.fr/yass/
+.. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.cristal.univ-lille.fr.svg?style=flat-square&label=Website
+    :target: https://bioinfo.cristal.univ-lille.fr/yass/
     :alt: Website
 
 ..  imagehttps://img.shields.io/coveralls/laurentnoe/yass/master.svg?style=flat-square&label=Coveralls
@@ -18,7 +18,7 @@
 yass
 ====
 
-(more at  http://bioinfo.lifl.fr/yass/)
+(more at  http://bioinfo.cristal.univ-lille.fr/yass/)
 
 ``yass`` is a genomic similarity seach tool for nucleic (and only
 nucleic) sequences in (multi)fasta or plain text format. ``yass``
@@ -33,7 +33,7 @@ into AXT format.
 Installation
 ------------
 
-(more at  http://bioinfo.lifl.fr/yass/download.php)
+(more at  http://bioinfo.cristal.univ-lille.fr/yass/download.php)
 
 You need a C compiler and the autotools. On Linux, you can install
 ``gcc``, ``autoconf``, ``automake``. On Mac, you can install
@@ -68,7 +68,7 @@ or copy the binary directly to your homedir::
 Command-line
 ------------
 
-(more at  http://bioinfo.lifl.fr/yass/help.php)
+(more at  http://bioinfo.cristal.univ-lille.fr/yass/help.php)
 
 
 common usage
@@ -130,9 +130,9 @@ search parameters
     comma, where each seed  is a word on the "#@-" alphabet
     
     (Note that the Iedera tool can do the design:
-    https://github.com/LaurentNoe/iedera
+    https://github.com/laurentnoe/iedera
     or
-    http://bioinfo.lifl.fr/yass/iedera.php
+    http://bioinfo.cristal.univ-lille.fr/yass/iedera.php
     )
 
 -c <N>
@@ -157,4 +157,11 @@ A second example where the scoring system is modified, the E-value changed::
 
 
   
+
+References
+----------
+
+how to cite this tool:
+
+    Noe L., Kucherov G., YASS: enhancing the sensitivity of DNA similarity search, 2005, Nucleic Acids Research, 33(2):W540-W543. <http://doi.org/10.1093/nar/gki478>
 
