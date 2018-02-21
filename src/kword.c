@@ -150,7 +150,7 @@ long int CreateData(/* in */  char *filename,
           column = 1;
           line++;
         } else {
-          fprintf(stderr,"* Error : file \"%s\" : invalid header char \'%c\' on line %ld, column %ld\n",filename,car,line,column);
+          fprintf(stderr,"* Error : file \"%s\" : invalid header char \'%c\' on Unix line %ld (Windows line %ld), column %ld\n",filename,car,line,(line+1)/2,column);
           exit(1);
         }
         break;
@@ -166,7 +166,7 @@ long int CreateData(/* in */  char *filename,
       default:
         if (!invalid_report[(unsigned)car]) {
           invalid_report[(unsigned)car] = 1;
-          fprintf(stderr,"* Warning : file \"%s\" : invalid character \'%c\' (\"0x%2X\") on line %ld, column %ld (ignored and not reported anymore on this file)\n",filename,car,(unsigned)car,line,column);
+          fprintf(stderr,"* Warning : file \"%s\" : invalid character \'%c\' (\"0x%2X\") on Unix line %ld (Windows line %ld), column %ld (ignored and not reported anymore on this file)\n",filename,car,(unsigned)car,line,(line+1)/2,column);
         }
         column++;
         break;
