@@ -45,7 +45,7 @@ Using the command line, type::
 
   git clone https://github.com/laurentnoe/yass.git
   cd yass
-  ./configure
+  ./configure --with-threads
   make
 
 or::
@@ -53,7 +53,7 @@ or::
   git clone https://github.com/laurentnoe/yass.git
   cd yass
   autoreconf
-  ./configure
+  ./configure --with-threads
   automake
   make
 
