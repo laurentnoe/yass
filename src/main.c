@@ -863,10 +863,6 @@ void * thread_query_chunk(void *num)
       q_chunk     = gp_query     + gp_chunkstrt_query[current_chunk_nb];
       q_chunk_rev = gp_query_rev + gp_chunkstrt_query[current_chunk_nb];
 
-      if (q_size < gp_seeds_span_min) {
-        _ERROR("selected query chunk of the first file is too small to be indexed, please change the seed with the \'-p \"<seed pattern>\"\' parameter");
-      }
-
       minscore =  MinScore(gp_k_blast, gp_lambda_blast,
                      gp_selection_fasta?q_size:gp_querysize,
                      gp_textsize, gp_expectation_value);
@@ -1021,19 +1017,45 @@ int main(int argc, char *argv[]) {
       }
     }
 
+    /* check which query chunk to use */
+    if (gp_selection_fasta == 0) {
+      gv_chunk_nb = 0;
+      gv_chunk_nb_end = gp_nbchunks_query;
+      /* if more than 10 chunks ... "-S 0" warning */
+      if (gp_nbchunks_query > 10) {
+        _WARNING("the -S 0 parameter enumerates all the first file chunks, indexing one at a time : it can be slow !!");
+        if (gp_nbchunks_text < gp_nbchunks_query) {
+          fprintf(stderr,"  reversing the order of the two files would help...\n");
+        }
+      }
+    } else {
+      if (gp_nbchunks_query < gp_selection_fasta) {
+        _ERROR("selected fasta chunk does not exist in the first file, please check your -S parameter");
+      }
+      gv_chunk_nb     = gp_selection_fasta-1;
+      gv_chunk_nb_end = gp_selection_fasta;
+    }
+
     /* check sizes of the sequences compared to */
     /* first sequence */
     if (gp_nbfiles > 0) {
       if (gp_nbchunks_query == 1) {
         if (gp_chunksize_query[0] < gp_seeds_span_min) {
-          _ERROR("first file is too small to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
+          _ERROR("first file is too small to be indexed with the current seed(s). Please change the seed(s) with the \'-p \"<seed pattern>\"\' parameter");
         }
       } else {
         if (gp_nbchunks_query > 1) {
-          int i;
-          for (i = 0; i < gp_nbchunks_query; i++) {
-            if (gp_chunksize_query[i] < gp_seeds_span_min) {
-              _ERROR("first file contains too small chunks to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
+          if (gp_selection_fasta) {
+            if (gp_chunksize_query[gv_chunk_nb] < gp_seeds_span_min) {
+              _ERROR("first file selected chunk is too small to be indexed with the current seed(s). Please change the seed(s) with the \'-p \"<seed pattern>\"\' parameter");
+            }
+          } else {
+            int i;
+            for (i = 0; i < gp_nbchunks_query; i++) {
+              if (gp_chunksize_query[i] < gp_seeds_span_min) {
+                _WARNING("first file contains small chunk(s) that is/(are) too small to be indexed with the current seed(s) and will be ignored. Please change the seed(s) with the \'-p \"<seed pattern>\"\' parameter");
+                break;
+              }
             }
           }
         } else {
@@ -1046,14 +1068,14 @@ int main(int argc, char *argv[]) {
     if (gp_nbfiles > 1) {
       if (gp_nbchunks_text == 1) {
         if (gp_chunksize_text[0] < gp_seeds_span_min) {
-          _ERROR("second file is too small to be indexed with the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter");
+          _ERROR("second file is too small to be processed with the current seed(s). Please change the seed(s) with the \'-p \"<seed pattern>\"\' parameter");
         }
       } else {
         if (gp_nbchunks_text > 1) {
           int i;
           for (i = 0; i < gp_nbchunks_text; i++) {
             if (gp_chunksize_text[i] < gp_seeds_span_min) {
-              _WARNING("second file contains small chunks that will be ignored using the current seed. Please change the seed with the \'-p \"<seed pattern>\"\' parameter\n");
+              _WARNING("second file contains small chunk(s) that is/(are) too small to be processed with the current seed(s) and will be ignored. Please change the seed(s) with the \'-p \"<seed pattern>\"\' parameter");
               break;
             }
           }
@@ -1142,26 +1164,6 @@ int main(int argc, char *argv[]) {
 #ifdef STATS
     gv_time_spent = time(NULL);
 #endif
-
-    /* check which query chunk to use */
-    if (gp_selection_fasta == 0) {
-      gv_chunk_nb = 0;
-      gv_chunk_nb_end = gp_nbchunks_query;
-      /* if more than 10 chunks ... "-S 0" warning */
-      if (gp_nbchunks_query > 10) {
-        _WARNING("the -S 0 parameter enumerates all the first file chunks, indexing one at a time : it can be slow !!");
-        if (gp_nbchunks_text < gp_nbchunks_query) {
-          fprintf(stderr,"  reversing the order of the two files would help...\n");
-        }
-      }
-    } else {
-      if (gp_nbchunks_query < gp_selection_fasta) {
-        _ERROR("selected fasta chunk does not exist in the first file, please check your -S parameter");
-      }
-      gv_chunk_nb     = gp_selection_fasta-1;
-      gv_chunk_nb_end = gp_selection_fasta;
-    }
-
 
     for (k = 0; k < MAX_QUERY_CHUNK_THREADS; k++) {
       AllocInitFeature(&gv_feature[k][0]);
