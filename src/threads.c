@@ -208,7 +208,7 @@ long int MinScoreOnCountMA(Feature * f, long int score)
     fprintf(stderr,"\n");
     _WARNING("-O limit reached => increasing score threshold");
     f->MAminscore = pi - 1;
-    fprintf(stderr,"  the score threshold is now = %ld\n", pi - 1);
+    fprintf(stderr,"  the ungapped score threshold is now set to %ld\n", pi - 1);
   }
 
   return 0;

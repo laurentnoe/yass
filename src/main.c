@@ -154,7 +154,7 @@ static void usage()
   fprintf(stderr,
         "                                                                               \n");
   fprintf(stderr,
-        "      -O <int> limit number of Output alignments (default %ld)\n",
+        "      -O <int> memory limit of the number of ungapped alignments (default %ld)\n",
         gp_nbmaxlines);
   fprintf(stderr,
         "      -S <int> Select sequence from the first multi-fasta file (default %ld)\n"
