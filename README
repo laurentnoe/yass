@@ -60,7 +60,7 @@ and redistribute the program under these licences with almost no restriction.
                 minimal allowed Entropy of trinucleotide distribution
                 ranging between 0 (no filter) and 6 (default 2.80)
                                                                                
-      -O <int> limit number of Output alignments (default 1000000)
+      -O <int> memory limit of the number of ungapped alignments (default 1000000)
       -S <int> Select sequence from the first multi-fasta file (default 0)
                  * use 0 to select the full first multi-fasta file
       -T <int> forbid aligning too close regions (e.g. Tandem repeats)
