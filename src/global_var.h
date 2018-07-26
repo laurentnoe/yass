@@ -1,6 +1,6 @@
 /*
  *  YASS 1.15
- *  Copyright (C) 2004-2017
+ *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg, 
  *  Steven Corroy, Antoine De Monte, Christophe Valmir.
