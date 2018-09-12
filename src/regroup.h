@@ -27,7 +27,7 @@
 
 #define DIAG_LENGTH(map,mai)    (MIN((mai)->right_pos_begin - (map)->right_pos_end, (mai)->left_pos_begin-(map)->left_pos_end))
 #define INDEL_LENGTH(dp,di)     (ABS((DIAGE(di))-(DIAGB(dp)))) /*FIXME : need to be simplified */
-#define DIAG_COST(l)            (-ABS(gp_cost_max_substitution_matrix * l))
+#define DIAG_COST(l)            ((l) >= 0 ? (-gp_cost_max_substitution_matrix * (l)): (2 * gp_cost_max_substitution_matrix * (l)))
 #define INDEL_COST(i)           (gp_cost_gap_opened+(i)*gp_cost_gap_continued)
 #define GOOD_LINK(l1,l2)        ((l1)->ma->blastscore + (l2)->ma->blastscore + DIAG_COST(DIAG_LENGTH((l1)->ma, (l2)->ma)) + INDEL_COST(INDEL_LENGTH((l1)->ma,(l2)->ma)) > MAX(((l1)->ma->blastscore),((l2)->ma->blastscore)))
 #define SCORE_LINK(l1,l2)      (DIAG_COST(DIAG_LENGTH((l1)->ma, (l2)->ma)) + INDEL_COST(INDEL_LENGTH((l1)->ma,(l2)->ma)))
