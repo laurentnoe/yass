@@ -89,7 +89,7 @@ long int MultiAssemble_Double( /*in */ char *data_query,        /*in */ long int
       }                                                                                               \
     }                                                                                                 \
     STATS_NB_SINGLE_TESTS(f);                                                                         \
-    if (max_left_score + max_right_score >  f->MAminscore) {                                          \
+    if (max_left_score + max_right_score >  f->TUminscore) {                                          \
       tuple * t;                                                                                      \
       STATS_NB_SINGLE_HITS(f);                                                                        \
       STATS_NB_CHAINS_BUILT_INC(f);                                                                   \
@@ -144,7 +144,7 @@ long int MultiAssemble_Double( /*in */ char *data_query,        /*in */ long int
       }                                                                                               \
     }                                                                                                 \
     STATS_NB_SINGLE_TESTS(f);                                                                         \
-    if (max_left_score + max_right_score >  f->MAminscore) {                                          \
+    if (max_left_score + max_right_score >  f->TUminscore) {                                          \
       tuple * t;                                                                                      \
       STATS_NB_SINGLE_HITS(f);                                                                        \
       STATS_NB_CHAINS_BUILT_INC(f);                                                                   \

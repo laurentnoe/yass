@@ -845,7 +845,7 @@ void * thread_query_chunk(void *num)
 {
   long int test = 0;
   long int current_chunk_nb = 0;
-  long int q_size, minscore;
+  long int q_size, tuminscore, maminscore;
   char * q_chunk     = NULL;
   char * q_chunk_rev = NULL;
   long int i = (*((long int *)num));
@@ -863,17 +863,21 @@ void * thread_query_chunk(void *num)
       q_chunk     = gp_query     + gp_chunkstrt_query[current_chunk_nb];
       q_chunk_rev = gp_query_rev + gp_chunkstrt_query[current_chunk_nb];
 
-      minscore =  MinScore(gp_k_blast, gp_lambda_blast,
-                     gp_selection_fasta?q_size:gp_querysize,
-                     gp_textsize, gp_expectation_value);
+      tuminscore =  MinScore(gp_k_blast, gp_lambda_blast,
+			     gp_selection_fasta?q_size:gp_querysize,
+			     gp_textsize, MAX(gp_expectation_value,10));
+      
+      maminscore =  MinScore(gp_k_blast, gp_lambda_blast,
+			     gp_selection_fasta?q_size:gp_querysize,
+			     gp_textsize, gp_expectation_value);
 
 #ifdef DEBUG_DATA
       fprintf(stderr, "querychunk_size: %ld, text_size: %ld\n", q_size, gp_textsize);
-      fprintf(stderr, "minscore : %ld\n", minscore);
+      fprintf(stderr, "tuple minscore : %ld, ma minscore : %ld\n", tuminscore, maminscore);
 #endif
 
       if (gp_reverse != 1) {
-        RESETFEATURE(gv_feature[i][0], minscore, q_chunk, q_size, 0, current_chunk_nb);
+        RESETFEATURE(gv_feature[i][0], tuminscore, maminscore, q_chunk, q_size, 0, current_chunk_nb);
 #ifdef THREAD_FORWARD_REVERSE
         CREATE_THREAD(gv_feature[i][0]->thread_assemble,
                       thread_work_assemble,gv_feature[i][0]);
@@ -884,7 +888,7 @@ void * thread_query_chunk(void *num)
 
 
       if (gp_reverse) {
-        RESETFEATURE(gv_feature[i][1], minscore, q_chunk_rev, q_size, 1, current_chunk_nb);
+        RESETFEATURE(gv_feature[i][1], tuminscore, maminscore, q_chunk_rev, q_size, 1, current_chunk_nb);
 #ifdef THREAD_FORWARD_REVERSE
         CREATE_THREAD(gv_feature[i][1]->thread_assemble,
                       thread_work_assemble,gv_feature[i][1]);
@@ -1193,7 +1197,7 @@ int main(int argc, char *argv[]) {
       ListSort_MAList(&gv_first_MA,&gv_last_MA,0x40000000,TRUE);
 
 
-
+    
 #ifdef DEBUG_LISTMA
     DisplayListMA(gv_first_MA);
 #endif

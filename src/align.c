@@ -112,7 +112,7 @@ if (TEL_POS(tb) >= TBL_POS(ta) && TER_POS(tb) >= TBR_POS(ta)) {                 
       }                                                                                             \
       tp_score += left_score + right_score;                                                         \
       MinScoreOnCountMA(feature,tp_score);                                                          \
-      if (tp_score >  feature->MAminscore) {                                                        \
+      if (tp_score >  feature->TUminscore) {                                                        \
          double entropy_query = Entropy3mer(data_query, left_pos_begin,                             \
                                             left_pos_end-left_pos_begin);                           \
          if (entropy_query > gp_entropy_min) {                                                      \
@@ -576,7 +576,7 @@ long int AlignTuples( tuplelist * tuple_list,
 
           /* 3) keep the best score of the two if this cannot be solved
            *    the less interesting will be saved without extension
-           *    if its score is > MAminscore.
+           *    if its score is > TUminscore.
            */
 
           if (seedscore < total_score) {
@@ -584,7 +584,7 @@ long int AlignTuples( tuplelist * tuple_list,
             printf("# -- (seedscore < total_score)\n");
             fflush(NULL);
 #endif
-            if (seedscore > feature->MAminscore) {
+            if (seedscore > feature->TUminscore) {
               /* FIXME : No left/right extends here */
 #ifdef DEBUG_ALIGNTUPLES
               printf("# -- (mem)\n");
@@ -608,7 +608,7 @@ long int AlignTuples( tuplelist * tuple_list,
             fflush(NULL);
 #endif
 
-            if (total_score > feature->MAminscore) {
+            if (total_score > feature->TUminscore) {
 #ifdef DEBUG_ALIGNTUPLES
               printf("# -- (mem)\n");
               fflush(NULL);

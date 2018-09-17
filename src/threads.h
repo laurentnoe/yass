@@ -82,8 +82,9 @@ typedef struct _FEATURE_ {
   long int    left_correction;
   long int  * buffer01;    /* buffer for prdyn */
   long int    last_point;  /* count the last dot displayed */
-  long int  * MAcount;     /* count number of MA with score between 2^i and < 2^(i+1) */
-  long int    MAminscore;  /* minimal score to be reached */
+  long int  * TUcount;     /* count number of MA with score between 2^i and < 2^(i+1) */
+  long int    TUminscore;  /* minimal score to be reached by a TUple (or a MA before grouping) */
+  long int    MAminscore;  /* minimal score to be reached by a MA once grouped */
 
   /* index part */
   long int * keycode_first[MAX_SEED]; /* keep a pointed to the "first" for each seed (otherwise set to NULL) */
@@ -410,18 +411,19 @@ long int MinScoreOnCountMA(Feature * f, long int score);
 
 
 
-#define RESETFEATURE(f,query_chunk_minscore,query_chunk_data,query_chunk_size,query_chunk_reverse,query_chunk_nb) { \
-      (f)->first_MA         = NULL;                                                                                 \
-      (f)->last_MA          = NULL;                                                                                 \
-      (f)->i_current        = 0;                                                                                    \
-      (f)->i_chunk          = 0;                                                                                    \
-      (f)->left_correction  = 0;                                                                                    \
-      (f)->last_point       = 0;                                                                                    \
-      (f)->MAminscore       = query_chunk_minscore;                                                                 \
-      (f)->chunk_query      = query_chunk_data;                                                                     \
-      (f)->chunk_query_size = query_chunk_size;                                                                     \
-      (f)->reverse          = query_chunk_reverse;                                                                  \
-      (f)->j_chunk          = query_chunk_nb;                                                                       \
+#define RESETFEATURE(f,query_chunk_tuminscore,query_chunk_maminscore,query_chunk_data,query_chunk_size,query_chunk_reverse,query_chunk_nb) { \
+      (f)->first_MA         = NULL;                                                                                                          \
+      (f)->last_MA          = NULL;                                                                                                          \
+      (f)->i_current        = 0;                                                                                                             \
+      (f)->i_chunk          = 0;                                                                                                             \
+      (f)->left_correction  = 0;                                                                                                             \
+      (f)->last_point       = 0;                                                                                                             \
+      (f)->TUminscore       = query_chunk_tuminscore;                                                                                        \
+      (f)->MAminscore       = query_chunk_maminscore;                                                                                        \
+      (f)->chunk_query      = query_chunk_data;                                                                                              \
+      (f)->chunk_query_size = query_chunk_size;                                                                                              \
+      (f)->reverse          = query_chunk_reverse;                                                                                           \
+      (f)->j_chunk          = query_chunk_nb;                                                                                                \
 }
 
 #ifdef STATS

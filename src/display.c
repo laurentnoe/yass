@@ -625,8 +625,8 @@ void DisplayHistoScore(Feature ** feature /* feature[2] */) {
 
     fprintf(stderr,"\t score 2^%2ld to 2^%2ld \t",i,i+1);
 
-    if (feature[0]->MAcount) {
-      long int count_f = feature[0]->MAcount[i];
+    if (feature[0]->TUcount) {
+      long int count_f = feature[0]->TUcount[i];
       while (count_f > 0) {
         count_f >>= 1;
         lines_f--;
@@ -636,15 +636,15 @@ void DisplayHistoScore(Feature ** feature /* feature[2] */) {
         lines_f--;
         fprintf(stderr," ");
       }
-      fprintf(stderr,"(%8ld)",feature[0]->MAcount[i]);
+      fprintf(stderr,"(%8ld)",feature[0]->TUcount[i]);
     }else {
       fprintf(stderr,
               "                                  "
               );
     }
 
-    if (feature[1]->MAcount) {
-      long int count_r = feature[1]->MAcount[i];
+    if (feature[1]->TUcount) {
+      long int count_r = feature[1]->TUcount[i];
       while (count_r > 0) {
         count_r >>= 1;
         lines_r--;
@@ -654,7 +654,7 @@ void DisplayHistoScore(Feature ** feature /* feature[2] */) {
         lines_r--;
         fprintf(stderr," ");
       }
-      fprintf(stderr,"(%8ld)\n",feature[1]->MAcount[i]);
+      fprintf(stderr,"(%8ld)\n",feature[1]->TUcount[i]);
     }else {
       fprintf(stderr,
               "                                  "

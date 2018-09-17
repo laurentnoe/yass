@@ -134,6 +134,7 @@ void AllocInitFeature(Feature ** p_feature) {
 
   feature->left_correction = 0;
 
+  feature->TUminscore      = 0;
   feature->MAminscore      = 0;
   {
     int i;
@@ -185,9 +186,9 @@ void AllocInitFeature(Feature ** p_feature) {
 
 long int CreateCountMA(Feature * f)
 {
-  f->MAcount = (long int *) MALLOC(sizeof(long int)*8*sizeof(long int));
-  ASSERT(f->MAcount, CreateCountMA);
-  memset(f->MAcount, '\0', sizeof(long int)*8*sizeof(long int));
+  f->TUcount = (long int *) MALLOC(sizeof(long int)*8*sizeof(long int));
+  ASSERT(f->TUcount, CreateCountMA);
+  memset(f->TUcount, '\0', sizeof(long int)*8*sizeof(long int));
   return 0;
 }
 
@@ -202,12 +203,12 @@ long int MinScoreOnCountMA(Feature * f, long int score)
     pi    <<= 1;
   }
 
-  f->MAcount[i]++;
+  f->TUcount[i]++;
 
-  if (f->MAcount[i] > gp_nbmaxlines && f->MAminscore < pi - 1) {
+  if (f->TUcount[i] > gp_nbmaxlines && f->TUminscore < pi - 1) {
     fprintf(stderr,"\n");
     _WARNING("-O limit reached => increasing score threshold");
-    f->MAminscore = pi - 1;
+    f->TUminscore = pi - 1;
     fprintf(stderr,"  the ungapped score threshold is now set to %ld\n", pi - 1);
   }
 
