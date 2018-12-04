@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script
 AC_PREREQ([2.60])
-AC_INIT([yass],[1.15],[laurent.noe@univ-lille1.fr])
+AC_INIT([yass],[1.15],[laurent.noe@univ-lille.fr])
 AC_CONFIG_AUX_DIR(build)
 AC_CANONICAL_TARGET
 AC_PROG_MAKE_SET
