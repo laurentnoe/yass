@@ -29,58 +29,54 @@
 #include "global_var.h"
 
 /*
- * renvoie (mant)^(puis)
+ * return (a)^(i_pow)
  *
  */
 
-
-double dpow(double mant, long int puis)
+double dpow(double a, long int i_expon)
 {
-    double c_puis = mant;
+    double c_2px = a;
     double result = 1;
-    long int i;
 
-    for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-        if (puis & 0x00000001) {
-            result *= c_puis;
-        }
-        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
-        puis >>= 1;
+    while (i_expon) {
+      if (i_expon & (long int) 1) {
+        result *= c_2px;
+      }
+      c_2px *= c_2px;
+      i_expon >>= 1;
     }
     return result;
 }
 
 
-long int ipow(long int mant, long int puis)
+long int ipow(long int a, long int i_expon)
 {
-    long int c_puis = mant;
+    long int c_2px = a;
     long int result = 1;
-    long int i;
 
-    for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-        if (puis & 0x00000001) {
-            result *= c_puis;
-        }
-        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
-        puis >>= 1;
+    while (i_expon) {
+      if (i_expon & (long int) 1) {
+        result *= c_2px;
+      }
+      c_2px *= c_2px;
+      i_expon >>= 1;
     }
     return result;
 }
 
 
 
-long double ldpow(double mant, long int puis)
+long double ldpow(double a, long int i_expon)
 {
-    long double c_puis = mant;
+    long double c_2px = a;
     long double result = 1;
-    long int i;
 
-    for (i = 0; i < (long int) ((sizeof(long int)) << 3); i++) {
-        if (puis & 0x00000001) {
-            result *= c_puis;
-        }
-        c_puis *= c_puis;       /* mant^2  mant^4  mant^8 etc ... */
-        puis >>= 1;
+    while (i_expon) {
+      if (i_expon & (long int) 1) {
+        result *= c_2px;
+      }
+      c_2px *= c_2px;
+      i_expon >>= 1;
     }
     return result;
 }
