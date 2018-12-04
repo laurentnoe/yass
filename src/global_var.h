@@ -161,5 +161,5 @@ extern long int gv_thread_num[MAX_QUERY_CHUNK_THREADS];
 extern MA *     gv_first_MA;
 extern MA *     gv_last_MA;
 
-
+extern long int gv_last_print_is_a_dot;
 #endif

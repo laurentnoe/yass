@@ -266,15 +266,21 @@ int long_int_cmp(const void *pi, const void *pj);
  */
 
 
-#define _WARNING(errmessage)  {                         \
-           fprintf(stderr,"* Warning : " #errmessage);  \
-           fprintf(stderr," \n");                       \
+#define _WARNING(errmessage)  {                 \
+   if (gv_last_print_is_a_dot)                  \
+      fprintf(stderr,"\n");                     \
+   fprintf(stderr,"* Warning : " #errmessage);  \
+   fprintf(stderr," \n");                       \
+   gv_last_print_is_a_dot = 0;                  \
 }
 
-#define _ERROR(errmessage)  {                        \
-           fprintf(stderr,"* Error : " #errmessage); \
-           fprintf(stderr," \n");                    \
-           exit(0);                                  \
+#define _ERROR(errmessage)  {                   \
+   if (gv_last_print_is_a_dot)                  \
+      fprintf(stderr,"\n");                     \
+   fprintf(stderr,"* Error : " #errmessage);    \
+   fprintf(stderr," \n");                       \
+   gv_last_print_is_a_dot = 0;                  \
+   exit(0);                                     \
 }
 
 

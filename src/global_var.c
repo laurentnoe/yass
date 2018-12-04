@@ -457,3 +457,5 @@ long int gv_thread_num[MAX_QUERY_CHUNK_THREADS] = {0};
 MA *     gv_first_MA       = NULL;
 MA *     gv_last_MA        = NULL;
 
+/* when several threads are running, know if the last print is from the progres bar or a warning */
+long int gv_last_print_is_a_dot = 0;

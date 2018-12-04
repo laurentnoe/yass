@@ -591,12 +591,14 @@ void Display_Progress(long int pos, long int maxpos, Feature  *feature)
     if (gp_reverse == 2) {
       while ( (double) feature->last_point * maxpos <(double) pos * (NBL / 2) && (feature->last_point < (NBL / 2)) ) {
         fprintf(stderr, ".");
+        gv_last_print_is_a_dot = 1;
         fflush(NULL);
         (feature->last_point)++;
       }
     } else {
       while ( (double) feature->last_point * maxpos <(double) pos * (NBL) && (feature->last_point < (NBL)) ) {
         fprintf(stderr, ".");
+        gv_last_print_is_a_dot = 1;
         fflush(NULL);
         (feature->last_point)++;
       }
@@ -605,6 +607,7 @@ void Display_Progress(long int pos, long int maxpos, Feature  *feature)
     /* multiple query chunks */
     while ( (double) feature->last_point * maxpos <(double) pos * (gp_dots[feature->j_chunk]) && feature->last_point < gp_dots[feature->j_chunk]) {
       fprintf(stderr, ".");
+      gv_last_print_is_a_dot = 1;
       fflush(NULL);
       (feature->last_point)++;
     }

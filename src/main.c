@@ -864,12 +864,12 @@ void * thread_query_chunk(void *num)
       q_chunk_rev = gp_query_rev + gp_chunkstrt_query[current_chunk_nb];
 
       tuminscore =  MinScore(gp_k_blast, gp_lambda_blast,
-			     gp_selection_fasta?q_size:gp_querysize,
-			     gp_textsize, MAX(gp_expectation_value,10));
+                	     gp_selection_fasta?q_size:gp_querysize,
+	        	     gp_textsize, MAX(gp_expectation_value,10));
       
       maminscore =  MinScore(gp_k_blast, gp_lambda_blast,
-			     gp_selection_fasta?q_size:gp_querysize,
-			     gp_textsize, gp_expectation_value);
+	        	     gp_selection_fasta?q_size:gp_querysize,
+	        	     gp_textsize, gp_expectation_value);
 
 #ifdef DEBUG_DATA
       fprintf(stderr, "querychunk_size: %ld, text_size: %ld\n", q_size, gp_textsize);
