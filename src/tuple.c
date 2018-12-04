@@ -848,7 +848,7 @@ long int EntropyAndScoreFilter_MAList(Feature * f, char *dataquery,
 long int DisplayTuple(tuple * tuple)
 {
   long int left_correction = 0;
-  printf("\t tuple : [(TBL:%9ld,TEL:%9ld),(TBR:%9ld,TBL:%9ld)] \t diag : %9ld \t size : %9ld \n", TBL_POS(tuple), TEL_POS(tuple), TBR_POS(tuple), TER_POS(tuple), tuple->diagonal , TSIZE(tuple));
+  fprintf(stderr,"\t tuple : [(TBL:%9ld,TEL:%9ld),(TBR:%9ld,TBL:%9ld)] \t diag : %9ld \t size : %9ld \n", TBL_POS(tuple), TEL_POS(tuple), TBR_POS(tuple), TER_POS(tuple), tuple->diagonal , TSIZE(tuple));
   return 0;
 }
 
@@ -856,9 +856,9 @@ long int DisplayTuple(tuple * tuple)
 long int DisplayListTupleList(tuplelist * tuplelist)
 {
 
-  printf("**display tuple list**\n");
+  fprintf(stderr,"**display tuple list**\n");
   while (tuplelist) {
-    printf("\t--tl--\n");
+    fprintf(stderr,"\t--tl--\n");
     DisplayTupleList(tuplelist);
     tuplelist = tuplelist->next;
   }
@@ -875,14 +875,14 @@ long int DisplayTupleList(tuplelist * tuplelist)
       DisplayTuple(tuple);
       tuple = tuple->next;
     }
-    printf("\n");
+    fprintf(stderr,"\n");
   }
   return 0;
 }
 
 long int DisplayGap(tuple * t1, tuple * t2)
 {
-  printf("\t intergaps {%ld,%ld}\n",TGAP_L(t1,t2),TGAP_R(t1,t2));
+  fprintf(stderr,"\t intergaps {%ld,%ld}\n",TGAP_L(t1,t2),TGAP_R(t1,t2));
   return 0;
 }
 
@@ -892,14 +892,14 @@ long int DisplayMA(MA * ma)
   tuple * tuple = ma->first_tuple;
 
   while (tuple) {
-    printf("\t");DisplayTuple(tuple);
+    fprintf(stderr,"\t");DisplayTuple(tuple);
     if (tuple->next) {
-      printf("\t");DisplayGap(tuple,tuple->next);
+      fprintf(stderr,"\t");DisplayGap(tuple,tuple->next);
     }
     tuple = tuple->next;
   }
-  printf("\t = {MA : (%ld,%ld), (%ld,%ld) chunk:%ld, score:%ld, reverse:%d}\n", ma->left_pos_begin, ma->left_pos_end, ma->right_pos_begin, ma->right_pos_end, ma->i_chunk, ma->blastscore, ma->reverse);
-  printf("\n");
+  fprintf(stderr,"\t = {MA : (%ld,%ld), (%ld,%ld) chunk:%ld, score:%ld, reverse:%d}\n", ma->left_pos_begin, ma->left_pos_end, ma->right_pos_begin, ma->right_pos_end, ma->i_chunk, ma->blastscore, ma->reverse);
+  fprintf(stderr,"\n");
   return 0;
 }
 
