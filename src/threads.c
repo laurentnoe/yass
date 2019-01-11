@@ -186,7 +186,7 @@ long int MinScoreOnCountMA(Feature * f, long int score)
     _WARNING("-O limit reached => increasing score threshold");
     f->TUminscore = pi - 1;
     f->MAminscore = MAX(f->TUminscore,f->MAminscore);
-    fprintf(stderr,"  the ungapped score threshold is now set to %ld,, the minimal alignment score is %ld\n", f->TUminscore, f->MAminscore);
+    fprintf(stderr,"  the ungapped score threshold is now set to %ld, the minimal alignment score is %ld\n", f->TUminscore, f->MAminscore);
   }
 
   return 0;
