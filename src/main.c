@@ -790,23 +790,22 @@ DWORD WINAPI thread_work_assemble(PVOID fvoid)
    */
 
   /*
-   * [6.2] Regrouping MA list
+   * [6.2] Filtering MA list
    */
-  DISPLAY_BEGIN(regrouping_mutex_begin,regrouping_begin ,"\n\n grouping   ....  ");
-  if (f->first_MA)
-    Regroup_MAList(f);
-  DISPLAY_END(regrouping_mutex_end,regrouping_end);
-
-  /*
-   * [6.3] Filtering MA list
-   */
-
   DISPLAY_BEGIN(filtering_mutex_begin, filtering_begin ," filtering   ...  ");
   if (f->first_MA)
     EntropyAndScoreFilter_MAList(f,
                          f->chunk_query,
                          gp_text,gp_chunkstrt_text);
   DISPLAY_END(filtering_mutex_end, filtering_end);
+
+  /*
+   * [6.3] Regrouping MA list
+   */
+  DISPLAY_BEGIN(regrouping_mutex_begin,regrouping_begin ,"\n\n grouping   ....  ");
+  if (f->first_MA)
+    Regroup_MAList(f);
+  DISPLAY_END(regrouping_mutex_end,regrouping_end);
 
   /*
    * [6.4] Sorting MA list according to score, entropy
@@ -864,12 +863,12 @@ void * thread_query_chunk(void *num)
       q_chunk_rev = gp_query_rev + gp_chunkstrt_query[current_chunk_nb];
 
       tuminscore =  MinScore(gp_k_blast, gp_lambda_blast,
-                	     gp_selection_fasta?q_size:gp_querysize,
-	        	     gp_textsize, MAX(gp_expectation_value,10));
-      
+                             gp_selection_fasta?q_size:gp_querysize,
+                             gp_textsize, MAX(gp_expectation_value,10));
+
       maminscore =  MinScore(gp_k_blast, gp_lambda_blast,
-	        	     gp_selection_fasta?q_size:gp_querysize,
-	        	     gp_textsize, gp_expectation_value);
+                             gp_selection_fasta?q_size:gp_querysize,
+                             gp_textsize, gp_expectation_value);
 
 #ifdef DEBUG_DATA
       fprintf(stderr, "querychunk_size: %ld, text_size: %ld\n", q_size, gp_textsize);
@@ -1197,7 +1196,7 @@ int main(int argc, char *argv[]) {
       ListSort_MAList(&gv_first_MA,&gv_last_MA,0x40000000,TRUE);
 
 
-    
+
 #ifdef DEBUG_LISTMA
     DisplayListMA(gv_first_MA);
 #endif
