@@ -271,6 +271,7 @@ int long_int_cmp(const void *pi, const void *pj);
       fprintf(stderr,"\n");                     \
    fprintf(stderr,"* Warning : " #errmessage);  \
    fprintf(stderr," \n");                       \
+   fflush(NULL);                                \
    gv_last_print_is_a_dot = 0;                  \
 }
 
@@ -279,6 +280,7 @@ int long_int_cmp(const void *pi, const void *pj);
       fprintf(stderr,"\n");                     \
    fprintf(stderr,"* Error : " #errmessage);    \
    fprintf(stderr," \n");                       \
+   fflush(NULL);                                \
    gv_last_print_is_a_dot = 0;                  \
    exit(0);                                     \
 }
