@@ -117,6 +117,13 @@ void free_data(tree_data * data);
 
 list_MA *queue_push_and_sort_MA(queue_MA * q, MA * item, list_MA * itself);
 
+/*
+ * list_MA *queue_insert_and_sort_MA(queue_MA * q, MA * item, list_MA * itself)
+ *
+ * Put a MA inside the queue by trying both ends and keep the queue sorted
+ */
+
+list_MA * queue_insert_and_sort_MA(queue_MA * q, MA * item, list_MA * itself);
 
 /*
  * list_MA * queue_pop_MA (queue_MA *q)
@@ -127,12 +134,12 @@ list_MA *queue_push_and_sort_MA(queue_MA * q, MA * item, list_MA * itself);
 list_MA *queue_pop_MA(queue_MA * q);
 
 /*
- * list_MA * queue_extract_MA (queue_MA *q, list_MA *l)
+ * list_MA * queue_extract_MA (queue_MA *q, MA *item)
  *
  * Delete a list_MA from a queue
  */
 
-list_MA * queue_extract_MA(queue_MA * q, MA * item);
+list_MA * queue_extract_MA(queue_MA * q, MA * item, list_MA ** p_list_MA_hint);
 
 
 /*

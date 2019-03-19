@@ -96,7 +96,7 @@ list_MA *tree_q_delete(TREE_TYPE(_tree) * tree, MA * ma)
 
   if (data) {
     /* when found we delete it from its queue in the tree */
-    list_MA_curr = queue_extract_MA(&data->queue, ma);
+    list_MA_curr = queue_extract_MA(&data->queue, ma, NULL);
 
     /* after that, if the queue is empty we delete the node */
     if (data->queue.first == NULL) {
@@ -145,7 +145,6 @@ void display_tree_list(TREE_TYPE(_tree) * T)
     data = data->list[1];
   }
   printf("\n");
-
 }
 
 
@@ -157,21 +156,22 @@ void display_tree_list(TREE_TYPE(_tree) * T)
 
 void clear_tree_and_queue(Feature *feature)
 {
-
-  list_MA * list_MA_l;
-  list_MA * list_MA_pac;
+  list_MA * list_MA_hint = NULL;
 
   while (feature->T.root) {
-    list_MA_l = (feature->T.root->data).queue.first;
+    list_MA * list_MA_l  = (feature->T.root->data).queue.first;
 
-    list_MA_pac = queue_extract_MA(&feature->Q, list_MA_l->ma);
-    if (list_MA_pac) {
-      FREE(list_MA_pac,sizeof(list_MA));
+    /* removal in the main queue : put "itself" as a possible "hint" for removal */
+    list_MA_hint = list_MA_l->itself;
+    list_MA * list_MA_q =  queue_extract_MA(&feature->Q, list_MA_l->ma, &list_MA_hint);
+    if (list_MA_q) {
+      FREE(list_MA_q,sizeof(list_MA));
     } else {
       _WARNING("clear_tree() : missing prod_and_cust in Q ");
     }
 
-    list_MA_pac = tree_q_delete(&feature->T, list_MA_l->ma);
+    /* removal in the tree : easier, since "root removal" until tree is empty */
+    list_MA * list_MA_pac = tree_q_delete(&feature->T, list_MA_l->ma);
     if (list_MA_pac) {
       if (list_MA_pac->customer) {
         FREE(list_MA_pac->customer,sizeof(table_MA));
@@ -425,7 +425,7 @@ void window_deleter(long int pos, Feature *feature)
 #endif
         {
           /* we delete the grouped MA from the global queue */
-          list_MA *list_MA_pac = queue_extract_MA(&feature->Q, target_MA);
+          list_MA *list_MA_pac = queue_extract_MA(&feature->Q, target_MA, NULL);
 #ifdef DEBUG_REGROUP
           if (list_MA_pac) {
 #endif
@@ -475,7 +475,7 @@ void window_deleter(long int pos, Feature *feature)
 
           {
             /* then we push it in order for it to be the last of the list */
-            list_MA *itself = queue_push_and_sort_MA(&feature->Q, current_MA, NULL);
+            list_MA *itself = queue_insert_and_sort_MA(&feature->Q, current_MA, NULL);
 
             /* and then we insert it into the tree */
             tree_data *data_sn = TREE_TYPE(_find)   (&feature->T, DIAGB(current_MA));
@@ -771,7 +771,7 @@ MA * main_regroup(MA * first_MA, Feature *feature) {
   while (current_MA && current_MA->i_chunk == i_chunk) {
 
     /* we insert it inside the global queue : itself is a pointer "in the Global queue" */
-    list_MA * itself = queue_push_and_sort_MA(&feature->Q, current_MA, NULL);
+    list_MA * itself = queue_insert_and_sort_MA(&feature->Q, current_MA, NULL);
 
     /* we insert it inside the tree */
     tree_data *data_sn = TREE_TYPE(_find)    (&feature->T, DIAGB(current_MA));
