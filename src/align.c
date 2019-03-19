@@ -284,7 +284,7 @@ long int AlignTuples( tuplelist * tuple_list,
       /* overlapped case */
       long int max_neg_gap = MIN(left_gap,right_gap);
       score =
-        gp_cost_max_substitution_matrix * max_neg_gap
+        2 * gp_cost_max_substitution_matrix * max_neg_gap
         +
         gp_cost_gap_opened
         +
@@ -337,7 +337,7 @@ long int AlignTuples( tuplelist * tuple_list,
               /* overlapped case */
               long int l_next_max_neg_gap = MIN(l_next_left_gap,l_next_right_gap);
               l_next_score =
-                gp_cost_max_substitution_matrix * l_next_max_neg_gap
+                2 * gp_cost_max_substitution_matrix * l_next_max_neg_gap
                 +
                 gp_cost_gap_opened
                 +
@@ -365,7 +365,7 @@ long int AlignTuples( tuplelist * tuple_list,
                     /* overlapped case */
                     long int t_next_max_neg_gap = MIN(t_next_left_gap,t_next_right_gap);
                     t_next_score =
-                      gp_cost_max_substitution_matrix * t_next_max_neg_gap
+                      2 * gp_cost_max_substitution_matrix * t_next_max_neg_gap
                       +
                       gp_cost_gap_opened
                       +
@@ -472,7 +472,7 @@ long int AlignTuples( tuplelist * tuple_list,
               /* overlapped case */
               long int prev_max_neg_gap = MIN(prev_left_gap,prev_right_gap);
               prev_score =
-                gp_cost_max_substitution_matrix * prev_max_neg_gap
+                2 * gp_cost_max_substitution_matrix * prev_max_neg_gap
                 +
                 gp_cost_gap_opened
                 +
@@ -535,7 +535,7 @@ long int AlignTuples( tuplelist * tuple_list,
                 /* overlapped case */
                 long int next_max_neg_gap = MIN(next_left_gap,next_right_gap);
                 next_score =
-                  gp_cost_max_substitution_matrix * next_max_neg_gap
+                  2 * gp_cost_max_substitution_matrix * next_max_neg_gap
                   +
                   gp_cost_gap_opened
                   +
