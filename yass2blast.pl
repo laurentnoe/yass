@@ -1,11 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 #
 # a quick&dirty script to convert "yass -d 1 " output files into
 # - axt format
 # - fasta format
 # - blast format
-# usage: yass2blast.pl [-blast|-fasta|-axt] {yassoutputfiles}\n";
-
+# usage: yass2blast.pl {-o <outputFile>} [-blast|-fasta|-axt] <yassOutputFiles>\n";
+#
 use strict;
 
 
@@ -16,6 +16,8 @@ use strict;
 my $timeMod    = 0;
 my %hash       = ();
 my $hash_count = 0;
+
+my $fh           = *STDOUT;
 
 sub PrintAlign() {
     # 1) read parameters
@@ -35,24 +37,19 @@ sub PrintAlign() {
         $middle = reverse($middle);
     }
     
-
-
     # 3) format selection
     if ($format eq "fasta") { 
-      # 3.1) fasta but with "-" to keep alignments
-      if ($reverse eq '-') {
-        print ">".$nbAlignments."a||".$name_q.": [".$pos_q_end."-".$pos_q_str ."]".$reverse."\n";
-      } else {
-	print ">".$nbAlignments."a||".$name_q.": [".$pos_q_str."-".$pos_q_end ."]".$reverse."\n";
-      }
-      print $fasta1."\n";
-      print ">".$nbAlignments."b||".$name_s.": [".$pos_s_str."-".$pos_s_end ."]+\n";
-      print $fasta2."\n";      
+        # 3.1) fasta but with "-" to keep alignments
+        print $fh ">".$nbAlignments."a||".$name_q.": [".$pos_q_str."-".$pos_q_end ."]".$reverse."\n";
+        print $fh $fasta1."\n";
+        print $fh ">".$nbAlignments."b||".$name_s.": [".$pos_s_str."-".$pos_s_end ."]".$reverse."\n";
+        print $fh $fasta2."\n";
+
     } elsif ($format eq "axt") { 
         # 3.2) axt (blastz) format
-        print $nbAlignments."\t".$name_q."\t".$pos_q_str."\t".$pos_q_end ."\t".$name_s."\t".$pos_s_str."\t".$pos_s_end ."\t".$reverse."\t".$score."\n";
-        print $fasta1."\n";
-        print $fasta2."\n";
+        print $fh $nbAlignments."\t".$name_q."\t".$pos_q_str."\t".$pos_q_end ."\t".$name_s."\t".$pos_s_str."\t".$pos_s_end ."\t".$reverse."\t".$score."\n";
+        print $fh $fasta1."\n";
+        print $fh $fasta2."\n";
         
     } elsif ($format eq "blast") { 
         # 3.3) blast like format
@@ -64,25 +61,25 @@ sub PrintAlign() {
 		$hash{$name_s} = $hash_count++;
 	    }
 	    my $id_5 = sprintf("%-5d", ($hash{$name_s}+$timeMod)%65536);
-            print ">lcl|".$id_5." ".$name_s."\n";
-            print "Length=".$size_s."\n";
-            print "\n";
+            print $fh ">lcl|".$id_5." ".$name_s."\n";
+            print $fh "Length=".$size_s."\n";
+            print $fh "\n";
         }
 
         # b) print Alignment Header
 	if ($evalue eq "0") {
-	    printf(" Score = %d bits (%d),  Expect = 0.0\n",$bitscore,$score);
+	    printf $fh (" Score = %d bits (%d),  Expect = 0.0\n",$bitscore,$score);
 	} else {
-	    printf(" Score = %d bits (%d),  Expect = %.2g\n",$bitscore,$score,$evalue);
+	    printf $fh (" Score = %d bits (%d),  Expect = %.2g\n",$bitscore,$score,$evalue);
 	}
-        print " Identities = ".$nbMatches."/".(length($middle))." (".(int(100*$nbMatches/length($middle)))."%), Gaps = ".(length($middle)-$nbMatches-$nbMismatches)."/".(length($middle))." (".(int(100*(length($middle)-$nbMatches-$nbMismatches)/length($middle)))."%)\n";
-        print " Strand=Plus/";
+        print $fh " Identities = ".$nbMatches."/".(length($middle))." (".(int(100*$nbMatches/length($middle)))."%), Gaps = ".(length($middle)-$nbMatches-$nbMismatches)."/".(length($middle))." (".(int(100*(length($middle)-$nbMatches-$nbMismatches)/length($middle)))."%)\n";
+        print $fh " Strand=Plus/";
         if ($reverse eq "-"){
-            print "Minus"."\n";
+            print $fh "Minus"."\n";
         }else{
-            print "Plus"."\n";
+            print $fh "Plus"."\n";
         }
-        print "\n";
+        print $fh "\n";
         
 
         # c) print Alignment
@@ -102,25 +99,25 @@ sub PrintAlign() {
             my $letters_subfasta2 = $subfasta2; $letters_subfasta2 =~ s/-//g;
             my $nbletters_subfasta1 = length($letters_subfasta1);
             my $nbletters_subfasta2 = length($letters_subfasta2);
-            printf ("Query  %-9d ",$i_fasta1); $i_fasta1 += $nbletters_subfasta1-1;
-            print($subfasta1);
-            printf ("  %d\n",      $i_fasta1); $i_fasta1 += 1;
+            printf $fh ("Query  %-9d ",$i_fasta1); $i_fasta1 += $nbletters_subfasta1-1;
+            print  $fh ($subfasta1);
+            printf $fh ("  %d\n",      $i_fasta1); $i_fasta1 += 1;
 
-            printf ("                 ");  
-            print($submiddle);
-            printf ("\n");
+            printf $fh ("                 ");
+            print  $fh ($submiddle);
+            printf $fh ("\n");
 
             if ($reverse eq "-") {
-                printf ("Sbjct  %-9d ",$i_fasta2); $i_fasta2 -= $nbletters_subfasta2-1;
-                print($subfasta2);
-                printf ("  %d\n",      $i_fasta2); $i_fasta2 -= 1;
+                printf $fh ("Sbjct  %-9d ",$i_fasta2); $i_fasta2 -= $nbletters_subfasta2-1;
+                print  $fh ($subfasta2);
+                printf $fh ("  %d\n",      $i_fasta2); $i_fasta2 -= 1;
             } else {
-                printf ("Sbjct  %-9d ",$i_fasta2); $i_fasta2 += $nbletters_subfasta2-1;
-                print($subfasta2); 
-                printf ("  %d\n",      $i_fasta2); $i_fasta2 += 1;
+                printf $fh ("Sbjct  %-9d ",$i_fasta2); $i_fasta2 += $nbletters_subfasta2-1;
+                print  $fh ($subfasta2);
+                printf $fh ("  %d\n",      $i_fasta2); $i_fasta2 += 1;
             }
             $c += 60;     
-            print "\n\n";
+            print $fh "\n\n";
         }
     } elsif ($format eq "blastheader") { 
         # 3.4) just the header of blast
@@ -131,17 +128,17 @@ sub PrintAlign() {
 	    my $id_5 = sprintf("%-5d", ($hash{$name_s}+$timeMod)%65536);
 
             if (length ($name_s) > 50) {
-                print "lcl|".$id_5." ".(substr($name_s,0,50))."... "
+                print $fh "lcl|".$id_5." ".(substr($name_s,0,50))."... "
             } else {
-                print "lcl|".$id_5." ".$name_s;
+                print $fh "lcl|".$id_5." ".$name_s;
                 for(my $e = length ($name_s); $e <= 53 ;$e ++) {
-                    print " ";
+                    print $fh " ";
                 }
             }
 	    if ($evalue eq "0") {
-		printf("%7.1f   0.0\n",$bitscore);
+		printf $fh ("%7.1f   0.0\n",$bitscore);
 	    } else {
-		printf("%7.1f   %.2g\n",$bitscore,$evalue);
+		printf $fh ("%7.1f   %.2g\n",$bitscore,$evalue);
 	    }
         }#1_0 embl|AF417609|AF417609 Colpidium campylum telomerase RNA gen...    32   0.063
     }
@@ -208,15 +205,15 @@ sub ScanFile($$) {
         "");
 
     if ($format eq "blast") {
-	print "BLASTN 2.2.25+\n";
-	print "Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro\n";
-	print "A. Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and\n";
-	print "David J. Lipman (1997), \"Gapped BLAST and PSI-BLAST: a new\n";
-	print "generation of protein database search programs\", Nucleic\n";
-	print "Acids Res. 25:3389-3402.\n";
-	print "\n";
-	print "\n";
-	print "RID: none\n\n\n";
+	print $fh "BLASTN 2.2.25+\n";
+	print $fh "Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro\n";
+	print $fh "A. Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and\n";
+	print $fh "David J. Lipman (1997), \"Gapped BLAST and PSI-BLAST: a new\n";
+	print $fh "generation of protein database search programs\", Nucleic\n";
+	print $fh "Acids Res. 25:3389-3402.\n";
+	print $fh "\n";
+	print $fh "\n";
+	print $fh "RID: none\n\n\n";
     }
 
 
@@ -226,7 +223,7 @@ sub ScanFile($$) {
         if (($format eq "blast") && !($name_q eq $previous_name_q)) {
             # push the memorized blast alignments
             if ((scalar @last_align) > 0) {
-		print "\nALIGNMENTS\n";
+		print $fh "\nALIGNMENTS\n";
                 foreach my $m (@last_align) {
                     &PrintAlign($m->{nbAlignments},$m->{nbSSequences},
                                 $m->{pos_q_str},$m->{pos_q_end},$m->{pos_s_str},$m->{pos_s_end},
@@ -240,10 +237,10 @@ sub ScanFile($$) {
                 }
                 @last_align = ();
             }
-            print "Query= ".$name_q."\n\n";
-            print "Length=".$size_q."\n\n\n";
-            print "                                                                   Score    E\n";
-            print "Sequences producing significant alignments:                       (Bits) Value\n\n";
+            print $fh "Query= ".$name_q."\n\n";
+            print $fh "Length=".$size_q."\n\n\n";
+            print $fh "                                                                   Score    E\n";
+            print $fh "Sequences producing significant alignments:                       (Bits) Value\n\n";
             $previous_name_q = $name_q;
 	    $previous_name_s = "";
         }
@@ -414,7 +411,7 @@ sub ScanFile($$) {
     if ($format eq "blast") {
        # push the memorized blast alignments
        if ((scalar @last_align) > 0) {
-	   print "\nALIGNMENTS\n";
+	   print $fh "\nALIGNMENTS\n";
            foreach my $m (@last_align) {
                 &PrintAlign($m->{nbAlignments},$m->{nbSSequences},
                             $m->{pos_q_str},$m->{pos_q_end},$m->{pos_s_str},$m->{pos_s_end},
@@ -429,7 +426,6 @@ sub ScanFile($$) {
             @last_align = ();
        }
     }
-
     close FIC;
     return $nbAlignments;
 }
@@ -442,11 +438,13 @@ sub ScanFile($$) {
 # Main #
 #------#
 
-my $outputformat = "blast";
+my $outputFormat = "blast";
+my $outputFile   = undef;
 
 my @timeData = localtime(time);
 my $timeDataJoin = join('', @timeData);
    $timeMod  = ($timeDataJoin % 65536);
+
 
 ($#ARGV >= 0) or die "yass2blast:\n".
                      "  a quick&dirty script to convert \"yass -d 1 \" output files into\n".
@@ -454,23 +452,30 @@ my $timeDataJoin = join('', @timeData);
                      "  - fasta format\n".
                      "  - blast format\n".
                      "\n".
-                     "  usage: yass2blast.pl [-blast|-fasta|-axt] {yassoutputfiles}\n".
+                     "  usage: yass2blast.pl {-o <outputFile>} [-blast|-fasta|-axt] <yassOutputFiles>\n".
                      "\n";
 
 
 for (my $i = 0 ; $i <= $#ARGV ; $i++) {
-    #a) select on the fly parameters ...
+    # a) select on the fly parameters ...
     if (($ARGV[$i]) eq "-blast") {
-        $outputformat = "blast";
+        $outputFormat = "blast";
     } elsif (($ARGV[$i]) eq "-fasta") {
-        $outputformat = "fasta";
+        $outputFormat = "fasta";
     } elsif (($ARGV[$i]) eq "-axt") {
-        $outputformat = "axt";
+        $outputFormat = "axt";
+    } elsif (($ARGV[$i]) eq "-o") {
+        $i = $i+1;
+        $i <= $#ARGV or die "-o found without parameter";
+        $outputFile = $ARGV[$i];
+	open($fh , '>>', $outputFile) or die "Unwritable \"$outputFile\" file";
     } else {
-        #b) or scan files
-        &ScanFile($ARGV[$i],$outputformat);
-	if ($outputformat eq "blast") {
-	    print "\n\n\n\n";
+        # b) or scan files
+        &ScanFile($ARGV[$i],$outputFormat);
+	if (defined $outputFile) {
+	    close $fh;
+	    $fh = *STDOUT;
+	    $outputFile = undef;
 	}
     }
 }
