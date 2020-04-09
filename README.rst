@@ -148,6 +148,7 @@ A very small example::
 
   yass           file1.fa  file2.mfa        >  yass-output.yop
   yass2blast.pl  -blast    yass-output.yop  >  blastlike-output.blk
+  yass2dotplot.php   yass-output.yop   filename1=""  filename2="" ; open dp.png
 
 
 A second example where the scoring system is modified, the E-value changed::
