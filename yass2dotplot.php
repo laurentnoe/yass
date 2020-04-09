@@ -20,7 +20,7 @@ ini_set('display_errors', 'On');
 
 if ($argc < 2) {
   die("Usage :\n".
-      "  ./dotplot.php  yass-output.yop\n".
+      "  ./yass2dotplot.php  yass-output.yop\n".
       "                 { filename1=\"youpi 1\"  filename2=\"youpi 2\" }\n".
       "                 { filename=fileoutput.png }\n".
       "                 { colorForwardR=255 colorForwardG=128 colorForwardB=255 }\n".
