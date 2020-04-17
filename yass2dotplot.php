@@ -167,6 +167,17 @@ while (!feof($fp) && $nb < $maxAl) {
     $Bmax = max($Bmax,$b2);
     $nb++;
   }
+  
+  /* Yass second line looks like this :
+   * "* "first_file_name" (71473 bp) / "second file_name" (1988 bp)"
+   */
+  if (preg_match_all ("/(([0-9]+) bp)/", $line, $match)) {
+    $a3 = intval($match[0][0]);
+    $b3 = intval($match[0][1]);
+
+    $Amax = max($Amax, $a3);
+    $Bmax = max($Bmax, $b3);
+  }
 }
 fclose($fp);
 
