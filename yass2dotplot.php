@@ -168,13 +168,12 @@ while (!feof($fp) && $nb < $maxAl) {
     $nb++;
   }
   
-  /* Yass second line looks like this :
+  /* Yass second line (if given by the -d 1, not present on -d 0) looks like this :
    * "* "first_file_name" (71473 bp) / "second file_name" (1988 bp)"
    */
-  if (preg_match_all ("/(([0-9]+) bp)/", $line, $match)) {
-    $a3 = intval($match[0][0]);
-    $b3 = intval($match[0][1]);
-
+  if (preg_match ("/\* \".*\" \(([0-9]+) bp\) \/ \".*\" \(([0-9]+) bp\)$/", $line, $match)) {
+    $a3 = intval($match[1]);
+    $b3 = intval($match[2]);
     $Amax = max($Amax, $a3);
     $Bmax = max($Bmax, $b3);
   }
