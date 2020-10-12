@@ -239,24 +239,30 @@ int long_int_cmp(const void *pi, const void *pj);
 #ifdef MEM_ALLOCATED
 #define  ASSERT(prt,errmessage) if (!(prt)) {                                                         \
     if (gv_mem_allocated >= gp_max_mem_allocated) {                                                   \
-       fprintf(stderr,"* Premature end : memory limit of %lu bytes reached : %lu\n",                  \
+       if (gv_last_print_is_a_dot)                                                                    \
+          fprintf(stderr,"\n");                                                                       \
+       fprintf(stderr,"* Error : premature end - memory limit of %lu bytes reached : %lu\n",          \
                gp_max_mem_allocated, gv_mem_allocated);                                               \
        fprintf(stderr,"                     \"" #prt "\", function \"" #errmessage "()\"\n");         \
        fprintf(stderr,"  please use the \" -Alloc <int> \"parameter to increase this limit \n");      \
        fprintf(stderr,"  or compile with \"./configure --with-low-memory\" \n");                      \
        fprintf(stderr,"  you can also decrease the evalue with the \"-E 1e-6\" parameter\n");         \
     } else                                                                                            \
-      fprintf(stderr,"* Allocation Error :\"" #prt "\", function \"" #errmessage "()\"\n");           \
+    if (gv_last_print_is_a_dot)                                                                       \
+       fprintf(stderr,"\n");                                                                          \
+    fprintf(stderr,"* Error : allocation failed \"" #prt "\", function \"" #errmessage "()\"\n");     \
     RESET(stdout)                                                                                     \
     RESET(stderr)                                                                                     \
     exit(0);                                                                                          \
 }
 #else
-#define  ASSERT(prt,errmessage) if (!(prt)) {                                            \
-  fprintf(stderr,"* Allocation Error :\"" #prt "\", function \"" #errmessage "()\"\n");  \
-  RESET(stdout)                                                                          \
-  RESET(stderr)                                                                          \
-  exit(0);                                                                               \
+#define  ASSERT(prt,errmessage) if (!(prt)) {                                                    \
+  if (gv_last_print_is_a_dot)                                                                    \
+     fprintf(stderr,"\n");                                                                       \
+  fprintf(stderr,"* Error : allocation failed \"" #prt "\", function \"" #errmessage "()\"\n");  \
+  RESET(stdout)                                                                                  \
+  RESET(stderr)                                                                                  \
+  exit(0);                                                                                       \
 }
 #endif
 
