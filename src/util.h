@@ -247,10 +247,11 @@ int long_int_cmp(const void *pi, const void *pj);
        fprintf(stderr,"  please use the \" -Alloc <int> \"parameter to increase this limit \n");      \
        fprintf(stderr,"  or compile with \"./configure --with-low-memory\" \n");                      \
        fprintf(stderr,"  you can also decrease the evalue with the \"-E 1e-6\" parameter\n");         \
-    } else                                                                                            \
-    if (gv_last_print_is_a_dot)                                                                       \
-       fprintf(stderr,"\n");                                                                          \
-    fprintf(stderr,"* Error : allocation failed \"" #prt "\", function \"" #errmessage "()\"\n");     \
+    } else {                                                                                          \
+       if (gv_last_print_is_a_dot)                                                                    \
+          fprintf(stderr,"\n");                                                                       \
+       fprintf(stderr,"* Error : allocation failed \"" #prt "\", function \"" #errmessage "()\"\n");  \
+    }                                                                                                 \
     RESET(stdout)                                                                                     \
     RESET(stderr)                                                                                     \
     exit(0);                                                                                          \
