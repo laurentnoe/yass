@@ -1,20 +1,15 @@
 environment:
   matrix:
-  - MSYSTEM: MINGW64
+  - platform: x64
+    MINGW_ARCH: x86_64
+    MINGW_ROOT: C:\msys64\mingw64
+    MSYSTEM: MINGW64
     PATH: C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Windows\System32;C:\Windows;%PATH%
-  - MSYSTEM: MINGW32
+  - platform: x86
+    MSYSTEM: MINGW32
+    MINGW_ROOT: C:\msys64\mingw32
+    MINGW_ARCH: x86
     PATH: C:\msys64\usr\bin;C:\msys64\mingw32\bin;C:\Windows\System32;C:\Windows;%PATH%
-
-install:
-  # update mysys2
-  - C:\msys64\usr\bin\bash -lc "curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
-  - C:\msys64\usr\bin\bash -lc "curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig"
-  - C:\msys64\usr\bin\bash -lc "pacman-key --verify msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig"
-  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -U msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
-  - C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Sy pacman-mirrors"
-  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy"
-  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S autoconf automake"
-  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-i686-oniguruma mingw-w64-x86_64-oniguruma"
 
 build_script:
   - bash -lc "exec 0</dev/null && cd $APPVEYOR_BUILD_FOLDER && autoreconf"
