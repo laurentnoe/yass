@@ -1,5 +1,5 @@
 /*
- *  YASS 1.15
+ *  YASS 1.16
  *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg,
@@ -258,8 +258,8 @@ static void parsepattern(int argc, char ** argv, long int * i) {
   (*i)++;
   if (*i >= argc)
     error("\"",argv[*i-1],"\" found without motif");
-  if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'T') || strchr(argv[*i],'X') || strchr(argv[*i],'x') ))
-    error("pattern \"",argv[*i],"\"  doesn't have any \"#,1\" / \"@,T,X,x\" symbol");
+  if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'X') || strchr(argv[*i],'N') || strchr(argv[*i],'R') || strchr(argv[*i],'Y') ))
+    error("pattern \"",argv[*i],"\"  doesn't have any \"#,1,N\" / \"@,X\" / \",R,Y\" symbol so no weight");
   /* free previous seeds and set gp_nb_seeds to zero */
   while (gp_nb_seeds > 0) {
     gp_nb_seeds--;

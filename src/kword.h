@@ -1,5 +1,5 @@
 /*
- *  YASS 1.15
+ *  YASS 1.16
  *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg,
@@ -37,10 +37,11 @@
         char          _seed_element_ = gp_motifs[__seed__][_j_];            \
         if  (unindexable[_data_element_]) {                                 \
             __keyvalue__ =  -1;                                             \
-            break;                                                          \
+            goto key_end;                                                   \
         }                                                                   \
         switch (_seed_element_) {                                           \
-           case '#' :                                                       \
+          case 'N' :                                                        \
+          case '#' :                                                        \
               __keyvalue__ <<= 2;                                           \
               __keyvalue__  |= (backcode[_data_element_]);                  \
            break;                                                           \
@@ -48,9 +49,68 @@
               __keyvalue__ <<= 1;                                           \
               __keyvalue__  |= (backcode[_data_element_]&0x1);              \
            break;                                                           \
-        }                                                                   \
+           case 'R' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0) { /* purine */      \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] >> 1 & 0x1);      \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'Y' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 1) { /* pyrimidine */  \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] >> 1 & 0x1);      \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'r' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 1) { /* not purine */  \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'y' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0) { /* not pyrimi.*/  \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'a' :                                                       \
+           case 'A' :                                                       \
+             if (backcode[_data_element_] != 0) { /* A */                   \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'c' :                                                       \
+           case 'C' :                                                       \
+             if (backcode[_data_element_] != 1) { /* C */                   \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'g' :                                                       \
+           case 'G' :                                                       \
+             if (backcode[_data_element_] != 2) { /* G */                   \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 't' :                                                       \
+           case 'T' :                                                       \
+             if (backcode[_data_element_] != 3) { /* T */                   \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+       }                                                                    \
     }                                                                       \
-}
+  key_end:;                                                                 \
+  }
 
 
 /* Read multifasta sequence */
