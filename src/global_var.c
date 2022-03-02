@@ -1,5 +1,5 @@
 /*
- *  YASS 1.15
+ *  YASS 1.16
  *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg,
