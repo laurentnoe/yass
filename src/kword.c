@@ -603,8 +603,8 @@ long int ComputeLengthAndSortSeeds()
         _WARNING("some Invalid chars in the seed : Silently replaced by \'-\'");
         gp_motifs[seed][i] = '-';
       }
-      if ((gp_motifs[seed][i] != '#' && gp_motifs[seed][i] != 'N') && ((i == 0) || (i == (strlen(gp_motifs[seed])-1))))
-        _WARNING("chars Other than Full Matches ('#'/'1'/'N') at first/or/last position of the Seeds are Strongly Discouraged!!");
+      if ((gp_motifs[seed][i] != '#' && gp_motifs[seed][i] != 'N' && gp_motifs[seed][i] != '@' && gp_motifs[seed][i] != 'R' && gp_motifs[seed][i] != 'Y') && ((i == 0) || (i == (strlen(gp_motifs[seed])-1))))
+        _WARNING("chars Other than Full Matches ('#'/'1'/'N') or Partial Matches ('@'/'R'/'Y') at first or last position of the Seeds are Strongly Discouraged!!");
       gp_seeds_span[seed]++;
     }
 
