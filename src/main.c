@@ -175,7 +175,9 @@ static void usage()
         "                 - example with one seed :\n"
         "                    " PACKAGE_NAME " file.fas -p  \"#@#--##--#-##@#\"\n"
         "                 - example with two complementary seeds :\n"
-        "                    " PACKAGE_NAME " file.fas -p \"##-#-#@#-##@-##,##@#--@--##-#--###\"\n",
+        "                    " PACKAGE_NAME " file.fas -p \"##-#-#@#-##@-##,##@#--@--##-#--###\"\n"
+        "                 - example with a \"minimally overlapping word\" (for speed only) :\n"
+        "                    " PACKAGE_NAME " file.fas -p \"RYNNNNNnnnNNNN\"\n",
         (long int) MAX_SEED);
   fprintf(stderr,
         "                 (default  \"");
