@@ -1,6 +1,6 @@
 CC       = x86_64-w64-mingw32-gcc
 STRIP    = x86_64-w64-mingw32-strip
-CFLAGS   = -m64 -Wall -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.15\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+CFLAGS   = -m64 -Wall -pipe -O3 -funroll-loops -fomit-frame-pointer -fstrict-aliasing -DPACKAGE_NAME=\"yass\" -DPACKAGE_VERSION=\"1.16\" -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
 CFLAGS  += -DWIN64
 CFLAGS  += -DTHREAD_FORWARD_REVERSE
 CFLAGS  += -mtune=nocona -msse2 -ftree-vectorize
