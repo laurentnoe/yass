@@ -260,7 +260,7 @@ static void parsepattern(int argc, char ** argv, long int * i) {
   (*i)++;
   if (*i >= argc)
     error("\"",argv[*i-1],"\" found without motif");
-  if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'X') || strchr(argv[*i],'N') || strchr(argv[*i],'R') || strchr(argv[*i],'Y') ))
+  if (!(strchr(argv[*i],'#') || strchr(argv[*i],'@') || strchr(argv[*i],'1') || strchr(argv[*i],'X') || strchr(argv[*i],'N') || strchr(argv[*i],'R') || strchr(argv[*i],'Y') || strchr(argv[*i],'S') || strchr(argv[*i],'W') || strchr(argv[*i],'M') || strchr(argv[*i],'K') ))
     error("pattern \"",argv[*i],"\"  doesn't have any \"#,1,N\" / \"@,X\" / \",R,Y\" symbol so no weight");
   /* free previous seeds and set gp_nb_seeds to zero */
   while (gp_nb_seeds > 0) {

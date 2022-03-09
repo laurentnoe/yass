@@ -578,6 +578,10 @@ long int ComputeLengthAndSortSeeds()
         case '@':
         case 'R':
         case 'Y':
+        case 'S':
+        case 'W':
+        case 'M':
+        case 'K':
           gp_seeds_bitweight[seed]  += 1;
         break;
 
@@ -590,6 +594,10 @@ long int ComputeLengthAndSortSeeds()
         case 'n':
         case 'r':
         case 'y':
+        case 's':
+        case 'w':
+        case 'm':
+        case 'k':
         case 'A':
         case 'C':
         case 'G':
@@ -603,8 +611,8 @@ long int ComputeLengthAndSortSeeds()
         _WARNING("some Invalid chars in the seed : Silently replaced by \'-\'");
         gp_motifs[seed][i] = '-';
       }
-      if ((gp_motifs[seed][i] != '#' && gp_motifs[seed][i] != 'N' && gp_motifs[seed][i] != '@' && gp_motifs[seed][i] != 'R' && gp_motifs[seed][i] != 'Y') && ((i == 0) || (i == (strlen(gp_motifs[seed])-1))))
-        _WARNING("chars Other than Full Matches ('#'/'1'/'N') or Partial Matches ('@'/'R'/'Y') at first or last position of the Seeds are Strongly Discouraged!!");
+      if ((gp_motifs[seed][i] != '#' && gp_motifs[seed][i] != 'N' && gp_motifs[seed][i] != '@' && gp_motifs[seed][i] != 'R' && gp_motifs[seed][i] != 'Y' && gp_motifs[seed][i] != 'S' && gp_motifs[seed][i] != 'W' && gp_motifs[seed][i] != 'M' && gp_motifs[seed][i] != 'K') && ((i == 0) || (i == (strlen(gp_motifs[seed])-1))))
+        _WARNING("chars Other than Full Matches ('#'/'1'/'N') or Partial Matches ('@'/'R'/'Y'/'S'/'W'/'M'/'K') at first or last position of the Seeds are Strongly Discouraged!!");
       gp_seeds_span[seed]++;
     }
 
