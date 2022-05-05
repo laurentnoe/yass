@@ -1,5 +1,5 @@
 /*
- *  YASS 1.15
+ *  YASS 1.16
  *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg,
@@ -163,7 +163,7 @@ int long_int_cmp(const void *pi, const void *pj);
 #define PACKAGE_NAME "yass"
 #endif
 #ifndef PACKAGE_VERSION
-#define PACKAGE_VERSION "1.15"
+#define PACKAGE_VERSION "1.16"
 #endif
 
 

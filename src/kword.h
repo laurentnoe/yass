@@ -1,5 +1,5 @@
 /*
- *  YASS 1.15
+ *  YASS 1.16
  *  Copyright (C) 2004-...
  *  the YASS team
  *  Laurent Noe, Gregory Kucherov, Mikhail Roytberg,
@@ -29,6 +29,7 @@
 
 /* compute the keyvalue,and the pend, given the pos,data and seed number  */
 #define KEY(__keyvalue__,__pend__,__data__,__pos__,__seed__) {              \
+    long int _u_;                                                           \
     long int _j_;                                                           \
     __pend__     = __pos__;                                                 \
     __keyvalue__ = 0;                                                       \
@@ -37,20 +38,148 @@
         char          _seed_element_ = gp_motifs[__seed__][_j_];            \
         if  (unindexable[_data_element_]) {                                 \
             __keyvalue__ =  -1;                                             \
-            break;                                                          \
+            goto key_end;                                                   \
         }                                                                   \
         switch (_seed_element_) {                                           \
-           case '#' :                                                       \
+          case 'N' :                                                        \
+          case '#' :                                                        \
               __keyvalue__ <<= 2;                                           \
               __keyvalue__  |= (backcode[_data_element_]);                  \
            break;                                                           \
            case '@' :                                                       \
               __keyvalue__ <<= 1;                                           \
-              __keyvalue__  |= (backcode[_data_element_]&0x1);              \
+              __keyvalue__  |= (backcode[_data_element_] & 0x1);            \
            break;                                                           \
-        }                                                                   \
+           case 'R' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0x0) { /* purine */    \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= ((backcode[_data_element_] >> 1) & 0x1);    \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'Y' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0x1) { /* pyrimid. */  \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= ((backcode[_data_element_] >> 1) & 0x1);    \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'S' :                                                       \
+             _u_  = backcode[_data_element_] >> 1;                          \
+             _u_ ^= backcode[_data_element_] & 0x1;                         \
+             if (_u_ == 0x1) { /* strong */                                 \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] & 0x1);           \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'W' :                                                       \
+             _u_  = backcode[_data_element_] >> 1;                          \
+             _u_ ^= backcode[_data_element_] & 0x1;                         \
+             if (_u_ == 0x0) { /* weak */                                   \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] & 0x1);           \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'M' :                                                       \
+             if ((backcode[_data_element_] & 0x2) == 0x0) { /* amino */     \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] & 0x1);           \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'K' :                                                       \
+             if ((backcode[_data_element_] & 0x2) == 0x2) { /* keto */      \
+               __keyvalue__ <<= 1;                                          \
+               __keyvalue__  |= (backcode[_data_element_] & 0x1);           \
+             } else {                                                       \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'r' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0x1) { /* not purine */\
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'y' :                                                       \
+             if ((backcode[_data_element_] & 0x1) == 0x0) { /* not pyrimi.*/\
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 's' :                                                       \
+             _u_  = backcode[_data_element_] >> 1;                          \
+             _u_ ^= backcode[_data_element_] & 0x1;                         \
+             if (_u_ == 0x0) { /* not strong */                             \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'w' :                                                       \
+             _u_  = backcode[_data_element_] >> 1;                          \
+             _u_ ^= backcode[_data_element_] & 0x1;                         \
+             if (_u_ == 0x1) { /* not weak */                               \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'm' :                                                       \
+             if ((backcode[_data_element_] & 0x2) == 0x2) { /* not amino */ \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'k' :                                                       \
+             if ((backcode[_data_element_] & 0x2) == 0x0) { /* not keto */  \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'a' :                                                       \
+           case 'A' :                                                       \
+             if (backcode[_data_element_] != 0x0) { /* A */                 \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'c' :                                                       \
+           case 'C' :                                                       \
+             if (backcode[_data_element_] != 0x1) { /* C */                 \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 'g' :                                                       \
+           case 'G' :                                                       \
+             if (backcode[_data_element_] != 0x2) { /* G */                 \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+           case 't' :                                                       \
+           case 'T' :                                                       \
+             if (backcode[_data_element_] != 0x3) { /* T */                 \
+               __keyvalue__   = -1;                                         \
+               goto key_end;                                                \
+             }                                                              \
+           break;                                                           \
+       }                                                                    \
     }                                                                       \
-}
+  key_end:;                                                                 \
+  }
 
 
 /* Read multifasta sequence */

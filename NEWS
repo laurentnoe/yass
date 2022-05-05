@@ -130,7 +130,7 @@ Yass-1.14 (* : work done by Antoine DE MONTE) [january 2008 - january 2013]
 - heuritic "improved" on resolve_overlaps "hits" (more DP-Alignment is done when this case occurs :
   this do not apply however on non resolve_overlaps "hits" that are thus "seed pattern dependent".
 
-Yass-1.15 : [january 2013 ...]
+Yass-1.15 : [january 2013 - april 2020]
 - Small improvement on first file (query) index on multifasta : avoid the "more than quadratic time" (due to reuse of kword first index)
   it is better than before, but no still perfect has it does not build index on multifasta file into a single index.
 - dereferencing pointer compiler warning fixed
@@ -156,3 +156,6 @@ Yass-1.15 : [january 2013 ...]
 - When grouping selction occurs, use the main queue in both directions, with a "last element" trick to search inside the main queue (does not change the algorithm, but its complexity) [march 2019]
 - Score used to upgrade tuples was reconsidered and set to its worst case [march 2019]
 - yass2dotplot.php added for Offline Dotplot Work [april 2020]
+
+Yass-1.16 : [march 2022 - ...]
+- MoW (Minimally overlapping words) seeds strategy "sampling" added to speed up search on large sequences [march 2022]

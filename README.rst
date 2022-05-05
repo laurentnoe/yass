@@ -135,6 +135,10 @@ search parameters
     http://bioinfo.cristal.univ-lille.fr/yass/iedera.php
     )
 
+    another possibility is to use "Minimally overlapping words"
+    such as the pattern   "RYNNNNNnnnNNNN"   to speed-up
+    the search, but at a lower sensitivity.
+ 
 -c <N>
    where *N = [1..2]* for single or double hit criterion
 
