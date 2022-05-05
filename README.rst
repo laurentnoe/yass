@@ -1,5 +1,5 @@
 
-.. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=Build%20Status%20Windows
+.. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=Build%20Status
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status
 
