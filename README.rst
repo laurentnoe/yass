@@ -1,19 +1,11 @@
 
-.. image:: https://img.shields.io/travis/laurentnoe/yass/master.svg?style=flat-square&label=Build%20Status%20Unix
-    :target: https://travis-ci.org/laurentnoe/yass/
-    :alt: Build Status Unix
-
 .. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=Build%20Status%20Windows
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
-    :alt: Build Status Windows
+    :alt: Build Status
 
 .. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.cristal.univ-lille.fr.svg?style=flat-square&label=Website
     :target: https://bioinfo.cristal.univ-lille.fr/yass/
     :alt: Website
-
-..  imagehttps://img.shields.io/coveralls/laurentnoe/yass/master.svg?style=flat-square&label=Coveralls
-    targethttps://coveralls.io/github/laurentnoe/yass
-    altCoverage Status
 
 yass
 ====

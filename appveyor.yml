@@ -1,18 +1,34 @@
-environment:
+# FROM : https://github.com/tsoding/nothing/blob/master/appveyor.yml
+
+image:
+  - Ubuntu
+  - MacOS
+  - Visual Studio 2015
+
+environment: # enable mingw build on windows image
+  MSYSTEM: MINGW64
+  CHERE_INVOKING: 1
   matrix:
-  - platform: x64
-    MINGW_ARCH: x86_64
-    MINGW_ROOT: C:\msys64\mingw64
-    MSYSTEM: MINGW64
-    PATH: C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Windows\System32;C:\Windows;%PATH%
-  - platform: x86
-    MSYSTEM: MINGW32
-    MINGW_ROOT: C:\msys64\mingw32
-    MINGW_ARCH: x86
-    PATH: C:\msys64\usr\bin;C:\msys64\mingw32\bin;C:\Windows\System32;C:\Windows;%PATH%
+    - BUILD_TYPE: mingw
+    - BUILD_TYPE: other
+
+matrix:
+  exclude: # no mingw build on unix
+    - image: Ubuntu
+      BUILD_TYPE: mingw
+    - image: MacOS
+      BUILD_TYPE: mingw
+    - image: Visual Studio 2015
+      BUILD_TYPE: other
 
 build_script:
-  - bash -lc "exec 0</dev/null && cd $APPVEYOR_BUILD_FOLDER && autoreconf"
-  - bash -lc "exec 0</dev/null && cd $APPVEYOR_BUILD_FOLDER && ./configure"
-  - bash -lc "exec 0</dev/null && cd $APPVEYOR_BUILD_FOLDER && make"
-  - bash -lc true
+  - ps: |
+       if ($isWindows) {
+           if ($env:BUILD_TYPE -eq 'mingw') {
+              C:\msys64\usr\bin\bash -lc "autoreconf"
+              C:\msys64\usr\bin\bash -lc "./configure --with-threads"
+              C:\msys64\usr\bin\bash -lc "make"
+           }
+       } else {
+           bash -c "autoreconf && ./configure --with-threads && make"
+       }
