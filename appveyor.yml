@@ -28,7 +28,29 @@ build_script:
               C:\msys64\usr\bin\bash -lc "autoreconf"
               C:\msys64\usr\bin\bash -lc "./configure --with-threads"
               C:\msys64\usr\bin\bash -lc "make"
+              C:\msys64\usr\bin\bash -lc "strip src/yass.exe"
+              C:\msys64\usr\bin\bash -lc "mv -f src/yass.exe src/yass-Win64.exe"
            }
        } else {
-           bash -c "autoreconf && ./configure --with-threads && make"
+           bash -c "autoreconf && ./configure --with-threads && make && strip src/yass"
+           if ($isLinux) {
+               bash -c "mv -f src/yass src/yass-Linux64.bin"
+           } else {
+               bash -c "mv -f src/yass src/yass-MacOS64.bin"
+           }
        }
+
+artifacts:
+  - path: 'src\yass-*'
+    name: Releases
+
+deploy:
+  provider: GitHub
+  description: 'Mac OS X and Windows 64 binaries'
+  release: ${APPVEYOR_REPO_TAG_NAME}
+  auth_token:
+    secure: a+NmYFzXxPCFefjxKpbBxgRjCUJTVBpQkPOyWV3/qXgp5/CB533quFGZh3j+3XOT
+  #artifact: /yass-.*/
+  draft: true
+  prerelease: true
+
