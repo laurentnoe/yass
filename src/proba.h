@@ -43,8 +43,8 @@ void computeLettersFrequency(long int nb_letters[2][4], /* out */ double letters
 void computeBackgroundFrequency(double letters_frequency[2][4], /* out */ double background_frequency[4][4]);
 void computeBackgroundTripletFrequency(long int nb_triplets[2][64], /* out */ double probabilities[64][64]);
 
-double computeLambda(double freq_letters[2][4]);
-double computeK(double freq_letters[2][4], double lambda);
+double computeLambda(double freq_background[4][4]);
+double computeK(double freq_background[4][4], double lambda);
 
 double entropyTriplet(long int * count /* [4^3]*/);
 double mutualInformationTriplet(long int ** count /* [4^3] x [4^3] */);
