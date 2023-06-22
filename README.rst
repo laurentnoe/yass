@@ -3,14 +3,14 @@
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status
 
-.. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.cristal.univ-lille.fr.svg?style=flat-square&label=Website
-    :target: https://bioinfo.cristal.univ-lille.fr/yass/
+.. image:: https://img.shields.io/website-up-down-green-red/http/bioinfo.univ-lille.fr.svg?style=flat-square&label=Website
+    :target: https://bioinfo.univ-lille.fr/yass/
     :alt: Website
 
 yass
 ====
 
-(more at  http://bioinfo.cristal.univ-lille.fr/yass/)
+(more at  http://bioinfo.univ-lille.fr/yass/)
 
 ``yass`` is a genomic similarity seach tool for nucleic (and only
 nucleic) sequences in (multi)fasta or plain text format. ``yass``
@@ -25,7 +25,7 @@ into AXT format.
 Installation
 ------------
 
-(more at  http://bioinfo.cristal.univ-lille.fr/yass/download.php)
+(more at  http://bioinfo.univ-lille.fr/yass/download.php)
 
 You need a C compiler and the autotools. On Linux, you can install
 ``gcc``, ``autoconf``, ``automake``. On Mac, you can install
@@ -60,7 +60,7 @@ or copy the binary directly to your homedir::
 Command-line
 ------------
 
-(more at  http://bioinfo.cristal.univ-lille.fr/yass/help.php)
+(more at  http://bioinfo.univ-lille.fr/yass/help.php)
 
 
 common usage
@@ -124,7 +124,7 @@ search parameters
     (Note that the Iedera tool can do the design:
     https://github.com/laurentnoe/iedera
     or
-    http://bioinfo.cristal.univ-lille.fr/yass/iedera.php
+    http://bioinfo.univ-lille.fr/yass/iedera.php
     )
 
     another possibility is to use "Minimally overlapping words"
