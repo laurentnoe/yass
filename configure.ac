@@ -11,8 +11,6 @@ AC_PROG_CC
 AC_PROG_INSTALL
 
 # Checks for header files.
-AC_HEADER_STDC
-AC_HEADER_TIME
 AC_CHECK_HEADERS([stdlib.h string.h assert.h math.h errno.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -48,7 +46,7 @@ if test "$threads" = "yes"; then
        CFLAGS=" $CFLAGS -DTHREAD_ASSEMBLE_ALIGN -DTHREAD_FORWARD_REVERSE -DTHREAD_QUERY_CHUNK "
        LIBS="$LIBS -lpthread"
   else
-    AC_MSG_RESULT(no : disabling \"--with-threads\" parameter)
+    AC_MSG_RESULT(no : disabling "--with-threads" parameter)
   fi
 
 else
@@ -57,7 +55,7 @@ else
       dnl Multithread advice
       if test `grep -c '^processor' /proc/cpuinfo` -gt 2; then
          AC_MSG_RESULT(yes) 
-         AC_MSG_RESULT(- try \"configure --with-threads\")
+         AC_MSG_RESULT(- try "configure --with-threads")
       else
          AC_MSG_RESULT(no)
       fi;
@@ -89,7 +87,7 @@ if test "$thread_forward_reverse" = "yes"; then
        CFLAGS=" $CFLAGS -DTHREAD_FORWARD_REVERSE "
        LIBS="$LIBS -lpthread"  
   else
-    AC_MSG_RESULT(no : disabling \"--with-thread-fr\" parameter)
+    AC_MSG_RESULT(no : disabling "--with-thread-fr" parameter)
   fi
 
 else
@@ -98,7 +96,7 @@ else
       dnl Multithread advice
       if test `grep -c '^processor' /proc/cpuinfo` -gt 1; then
          AC_MSG_RESULT(yes) 
-         AC_MSG_RESULT(- try \"configure --with-thread-fr\")
+         AC_MSG_RESULT(- try "configure --with-thread-fr")
       else
          AC_MSG_RESULT(no)
       fi;
@@ -130,7 +128,7 @@ if test "$thread_assemble_align" = "yes"; then
        CFLAGS=" $CFLAGS -DTHREAD_ASSEMBLE_ALIGN "
        LIBS="$LIBS -lpthread"  
   else
-    AC_MSG_RESULT(no : disabling \"--with-thread-aa\" parameter)
+    AC_MSG_RESULT(no : disabling "--with-thread-aa" parameter)
   fi
 
 else
@@ -139,7 +137,7 @@ else
       dnl Multithread advice
       if test `grep -c '^processor' /proc/cpuinfo` -gt 1; then
          AC_MSG_RESULT(yes) 
-         AC_MSG_RESULT(- try \"configure --with-thread-aa\")
+         AC_MSG_RESULT(- try "configure --with-thread-aa")
       else
          AC_MSG_RESULT(no)
       fi;
@@ -168,7 +166,7 @@ if test "$thread_query_chunk" = "yes"; then
        CFLAGS=" $CFLAGS -DTHREAD_QUERY_CHUNK "
        LIBS="$LIBS -lpthread"  
   else
-    AC_MSG_RESULT(no : disabling \"--with-thread-qc\" parameter)
+    AC_MSG_RESULT(no : disabling "--with-thread-qc" parameter)
   fi
 
 else
@@ -177,7 +175,7 @@ else
       dnl Multithread advice
       if test `grep -c '^processor' /proc/cpuinfo` -gt 1; then
          AC_MSG_RESULT(yes) 
-         AC_MSG_RESULT(- try \"configure --with-thread-qc\")
+         AC_MSG_RESULT(- try "configure --with-thread-qc")
       else
          AC_MSG_RESULT(no)
       fi;
