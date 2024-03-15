@@ -34,7 +34,7 @@ build_script:
               C:\msys64\usr\bin\bash -lc "mv -f src/yass.exe src/yass-Win64.exe"
            }
        } else {
-           bash -c "autoreconf && ./configure --with-threads && make && strip src/yass"
+           bash -c "autoupdate && autoconf && automake && ./configure --with-threads && make && strip src/yass"
            if ($isLinux) {
                bash -c "mv -f src/yass src/yass-Linux64.bin"
            } else {
