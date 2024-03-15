@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 #
 # a quick&dirty script to convert "yass -d 1 " output files into
 # - axt format
