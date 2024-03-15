@@ -344,15 +344,15 @@ if ($xmax < $thickness && $ymax < $thickness) {
 // Histogram plotting
 for ($x = 0; $x < $dimX; $x++) {
   if (($x_forward[$x]) * $thickness/$xmax >= 1)
-    ImageLine($image,$x,1+$dimY                                     , $x,1+$dimY + ($x_forward[$x])                * $thickness/$xmax,$colForwardLight);
+    ImageLine($image,$x,intval(1+$dimY)                                    ,$x,intval(1+$dimY+($x_forward[$x])                * $thickness/$xmax),$colForwardLight);
   if (($x_reverse[$x]) * $thickness/$xmax >= 1)
-    ImageLine($image,$x, 1+$dimY+($x_forward[$x]) * $thickness/$xmax, $x,1+$dimY + ($x_forward[$x]+$x_reverse[$x]) * $thickness/$xmax,$colReverseLight);
+    ImageLine($image,$x,intval(1+$dimY+($x_forward[$x]) * $thickness/$xmax),$x,intval(1+$dimY+($x_forward[$x]+$x_reverse[$x]) * $thickness/$xmax),$colReverseLight);
 }
 for ($y= 0; $y<$dimY; $y++) {
   if (($y_forward[$y]) * $thickness/$ymax >= 1)
-    ImageLine($image, 1+$dimX                                      , $y,1+$dimX + ($y_forward[$y])                 * $thickness/$ymax,$y,$colForwardLight);
+    ImageLine($image,intval(1+$dimX)                                    ,$y,intval(1+$dimX+($y_forward[$y])                 * $thickness/$ymax),$y,$colForwardLight);
   if (($y_reverse[$y]) * $thickness/$ymax >= 1)
-    ImageLine($image, 1+$dimX + ($y_forward[$y]) * $thickness/$ymax, $y,1+$dimX + ($y_forward[$y]+$y_reverse[$y])  * $thickness/$ymax,$y,$colReverseLight);
+    ImageLine($image,intval(1+$dimX+($y_forward[$y]) * $thickness/$ymax),$y,intval(1+$dimX+($y_forward[$y]+$y_reverse[$y])  * $thickness/$ymax),$y,$colReverseLight);
 }
 
 
@@ -361,7 +361,7 @@ if (!$inverted) {
   // X coordinates
   $Xrap = $Amax/$coef;
   for ($i = 1; $i < $Xrap; $i++) {
-    $reel = $i*$coef/$fact;
+    $reel = intval($i*$coef/$fact);
     ImageLine($image,$reel,$dimY,$reel,$dimY+5,$colForeground);
     ImageString($image,2,$reel,$dimY+7,$i*$coef,$colForeground);
   }
@@ -369,7 +369,7 @@ if (!$inverted) {
   // Y coordinates
   $Yrap = $Bmax/$coef;
   for ($i = 1; $i < $Yrap; $i++) {
-    $reel = $i*$coef/$fact;
+    $reel = intval($i*$coef/$fact);
     ImageLine($image,$dimX,$reel,$dimX+5,$reel,$colForeground);
     ImageString($image,2,$dimX+7,$reel,$i*$coef,$colForeground);
   }
@@ -377,7 +377,7 @@ if (!$inverted) {
   // X coordinates
   $Xrap = $Bmax/$coef;
   for ($i = 1; $i < $Xrap; $i++) {
-    $reel = $i*$coef/$fact;
+    $reel = intval($i*$coef/$fact);
     ImageLine($image,$reel,$dimY,$reel,$dimY+5,$colForeground);
     ImageString($image,2,$reel,$dimY+7,$i*$coef,$colForeground);
   }
@@ -385,7 +385,7 @@ if (!$inverted) {
   // Y coordinates
   $Yrap = $Amax/$coef;
   for ($i = 1; $i < $Yrap; $i++) {
-    $reel = $i*$coef/$fact;
+    $reel = intval($i*$coef/$fact);
     ImageLine($image,$dimX,$reel,$dimX+5,$reel,$colForeground);
     ImageString($image,2,$dimX+7,$reel,$i*$coef,$colForeground);
   }
