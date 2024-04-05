@@ -782,14 +782,12 @@ double mutualInformationTriplet(long int ** count /* [4^3] x [4^3] */)  {
   long int    sum  = 0;
   long int * rcount  = count[0];                        /* indirection du to "directtable" */
   double *rprob = gp_freq_tripletbackground[0];    /* indirection du to "directtable" */
-  double rprobsum = 0.0;
 
   {
     long int i;
     for (i = 0; i < 64*64; i++){
       if (rcount[i]){
         sum += rcount[i];
-        rprobsum += rprob[i];
       }
     }
 
