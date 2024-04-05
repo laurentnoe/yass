@@ -27,6 +27,7 @@ build_script:
            if ($env:BUILD_TYPE -eq 'mingw') {
               C:\msys64\usr\bin\bash -lc "aclocal"
               C:\msys64\usr\bin\bash -lc "autoupdate"
+              C:\msys64\usr\bin\bash -lc "autoreconf -vfi"
               C:\msys64\usr\bin\bash -lc "autoconf"
               C:\msys64\usr\bin\bash -lc "automake --add-missing"
               C:\msys64\usr\bin\bash -lc "./configure --with-threads"
@@ -35,7 +36,7 @@ build_script:
               C:\msys64\usr\bin\bash -lc "mv -f src/yass.exe src/yass-Win64.exe"
            }
        } else {
-           bash -c "./configure --with-threads && make && strip src/yass"
+           bash -c ""autoreconf -vfi && ./configure --with-threads && make && strip src/yass"
            if ($isLinux) {
                bash -c "mv -f src/yass src/yass-Linux64.bin"
            } else {
