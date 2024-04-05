@@ -25,6 +25,7 @@ build_script:
   - ps: |
        if ($isWindows) {
            if ($env:BUILD_TYPE -eq 'mingw') {
+              C:\msys64\usr\bin\bash -lc "aclocal"
               C:\msys64\usr\bin\bash -lc "autoupdate"
               C:\msys64\usr\bin\bash -lc "autoconf"
               C:\msys64\usr\bin\bash -lc "automake --add-missing"
