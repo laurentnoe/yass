@@ -189,7 +189,6 @@ LIBS="$LIBS -lm"
 AC_SUBST(CFLAGS)
 AC_SUBST(LIBS)
 AM_WITH_DMALLOC
-AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile
                  doc/Makefile
                  src/Makefile])
