@@ -34,11 +34,15 @@ build_script:
               C:\msys64\usr\bin\bash -lc "strip src/yass.exe"
               C:\msys64\usr\bin\bash -lc "mv -f src/yass.exe src/yass-Win64.exe"
            }
-       } else {
-           bash -c "./configure --with-threads && make && strip src/yass"
+       } else {       
            if ($isLinux) {
+               bash -c "sudo apt-get update"
+               bash -c "sudo apt-get upgrade"
+               bash -c "sudo apt-get install autotools-dev"
+               bash -c "./configure --with-threads && make && strip src/yass"
                bash -c "mv -f src/yass src/yass-Linux64.bin"
            } else {
+               bash -c "./configure --with-threads && make && strip src/yass"
                bash -c "mv -f src/yass src/yass-MacOS64.bin"
            }
        }
