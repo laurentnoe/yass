@@ -21,6 +21,8 @@ The associated tool ``yass2blast.pl``  may be used to convert the
 default yass output into blast full output, into fasta alignments, or
 into AXT format.
 
+The associated tool ``yass2dotplot.php`` could also be used to
+convert the default yass output into  ``png`` dotplots.
 
 Installation
 ------------
@@ -30,7 +32,7 @@ Installation
 You need a C compiler and the autotools. On Linux, you can install
 ``gcc``, ``autoconf``, ``automake``. On Mac, you can install
 ``xcode``, or the command line developer tools (or you can use
-``macports`` to install ``gcc-mp-5`` for example).
+``macports`` to install ``gcc`` for example).
 
 
 Using the command line, type::
