@@ -36,8 +36,6 @@ build_script:
            }
        } else {       
            if ($isLinux) {
-               bash -c "sudo apt-get -y update"
-               bash -c "sudo apt-get -y upgrade"
                bash -c "sudo apt-get -y install autotools-dev"
                bash -c "sudo apt-get -y install automake"
                bash -c "./configure --with-threads && make && strip src/yass"
