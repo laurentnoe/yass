@@ -22,7 +22,7 @@ default yass output into blast full output, into fasta alignments, or
 into AXT format.
 
 The associated tool ``yass2dotplot.php`` could also be used to
-convert the default yass output into  ``png`` dotplots.
+convert the default yass output into  ``png`` or  ``svg`` dotplots.
 
 Installation
 ------------
