@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-/* create an image */
+/* SVG "almost" equivalent functions (there is a need to use svg_imagecreate just followed by svg_imagefill) */
 function svg_imagecreate($Xdim,$Ydim) {
     return array(
         'Xdim' => $Xdim,
@@ -10,12 +10,12 @@ function svg_imagecreate($Xdim,$Ydim) {
     );
 }
 
-function svg_imagecolorallocate($img, $r_int, $g_int, $b_int) {
-    return "rgb(".$r_int.",".$g_int.",".$b_int.")";
-}
-
 function svg_imagefill(&$img,$xstart,$ystart,$col) {
     $img["SVG"] .= " style=\"background-color:".$col."\">\n";
+}
+
+function svg_imagecolorallocate($img, $r_int, $g_int, $b_int) {
+    return "rgb(".$r_int.",".$g_int.",".$b_int.")";
 }
 
 function svg_imageline(&$img ,$x1, $y1, $x2, $y2, $col, $width=1) {
@@ -24,13 +24,6 @@ function svg_imageline(&$img ,$x1, $y1, $x2, $y2, $col, $width=1) {
     $x2 = round($x2, 2);
     $y2 = round($y2, 2);
     $img["SVG"] .= " <line x1=\"".$x1."\" y1=\"".$y1."\" x2=\"".$x2."\" y2=\"".$y2."\" style=\"stroke:".$col.";stroke-width:".$width."px;stroke-linecap:square;\"/>\n";
-}
-
-function svg_imagefilledrectangle(&$img, $x, $y, $xdim, $ydim, $col) {
-    $x = round($x, 2);
-    $y = round($y, 2);
-    $img["SVG"] .= " <!--  refill before histogram -->\n";
-    $img["SVG"] .= " <rect x=\"".$x."\" y=\"".$y."\" width=\"".$xdim."\" height=\"".$ydim."\" style=\"fill:".$col."\"/>\n";
 }
 
 function svg_imagestring(&$img, $size, $x, $y, $str, $col) {
