@@ -29,7 +29,7 @@ function svg_imageline(&$img ,$x1, $y1, $x2, $y2, $col, $width=1) {
 function svg_imagestring(&$img, $size, $x, $y, $str, $col) {
     $x = round($x, 2);
     $y = round($y, 2);
-    $img["SVG"] .= " <text x=\"".$x."\" y=\"".$y."\" fill=\"".$col."\" text-anchor=\"left\" dominant-baseline=\"central\">".htmlspecialchars($str)."</text>\n";
+    $img["SVG"] .= " <text x=\"".$x."\" y=\"".$y."\" fill=\"".$col."\" text-anchor=\"start\" dominant-baseline=\"hanging\">".htmlspecialchars($str)."</text>\n";
 }
 
 function svg_imagestringup(&$img, $size, $x, $y, $str, $col) {
