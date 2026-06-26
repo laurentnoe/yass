@@ -1,9 +1,10 @@
 
-.. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=Build%20Status
+.. image:: https://img.shields.io/appveyor/ci/laurentnoe/yass/master.svg?style=flat-square&label=build%20status
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status
 
-.. image:: https://img.shields.io/website?style=flat-square&label=Website&url=http%3A%2F%2F193.54.101.81%2Fyass%2F
+.. image:: 
+https://img.shields.io/website?style=flat-square&url=https%3A//bioinfo.univ-lille.fr/yass
     :target: https://bioinfo.univ-lille.fr/yass/
     :alt: Website
 
