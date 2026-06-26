@@ -3,7 +3,7 @@
     :target: https://ci.appveyor.com/project/laurentnoe/yass/
     :alt: Build Status
 
-.. image:: https://img.shields.io/website.svg?style=flat-square&label=Website&url=http%3A%2F%2F193.54.101.81%2Fyass%2F
+.. image:: https://img.shields.io/website?style=flat-square&label=Website&url=http%3A%2F%2F193.54.101.81%2Fyass%2F
     :target: https://bioinfo.univ-lille.fr/yass/
     :alt: Website
 
